@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Mini Blog</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli:300,400,700|Playfair+Display:400,700,900"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="css/bootstrap-tagsinput.css" />
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css" />
+    <link rel="stylesheet" href="css/aos.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="site-wrap">
+      <div class="site-mobile-menu">
+        <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+      </div>
+
+      <header class="site-navbar" role="banner">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-12 search-form-wrap js-search-form">
+              <form method="get" action="#">
+                <input
+                  type="text"
+                  id="s"
+                  class="form-control"
+                  placeholder="Search..."
+                />
+                <button class="search-btn" type="submit">
+                  <span class="icon-search"></span>
+                </button>
+              </form>
+            </div>
+
+            <div class="col-4 site-logo">
+              <a href="index.html" class="text-black h2 mb-0">Mini Blog</a>
+            </div>
+
+            <div class="col-8 text-right">
+              <nav class="site-navigation" role="navigation">
+                <ul
+                  class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
+                >
+                  <li><a href="category.html">Home</a></li>
+                  <li><a href="category.html">Politics</a></li>
+                  <li><a href="category.html">Tech</a></li>
+                  <li><a href="category.html">Entertainment</a></li>
+                  <li><a href="category.html">Travel</a></li>
+                  <li><a href="category.html">Sports</a></li>
+                  <li><a href="blog.html">Create Blog</a></li>
+                  <li class="d-none d-lg-inline-block">
+                    <a href="#" class="js-search-toggle"
+                      ><span class="icon-search"></span
+                    ></a>
+                  </li>
+                </ul>
+              </nav>
+              <a
+                href="#"
+                class="site-menu-toggle js-menu-toggle text-black d-inline-block d-lg-none"
+                ><span class="icon-menu h3"></span
+              ></a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="site-section bg-light">
+        <div class="container">
+          <div class="container">
+            <div class="row same-height justify-content-center">
+              <div class="col-md-12 col-lg-10">
+                <div class="post-entry text-center">
+                  <h1 class="">Publish A Blog</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form onsubmit="return false;">
+            <h3>Header</h3>
+            <div class="form-group">
+              <label for="inputTitle">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputTitle"
+                placeholder="Your Title goes here..."
+              />
+            </div>
+            <div class="form-group">
+              <label for="inputSubtitle">Subtitle</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputSubtitle"
+                placeholder="your subtitle goes here ..."
+              />
+            </div>
+            <h3>Body</h3>
+            <div class="form-group">
+              <label for="intro">Introductory Paragraph</label>
+              <textarea
+                class="form-control"
+                id="intro"
+                rows="3"
+                placeholder="Please keep it short. max limit: 100 char"
+              ></textarea>
+              <label for="main">Main Body</label>
+              <textarea
+                class="form-control"
+                id="main"
+                rows="6"
+                placeholder="put your blog body here"
+              ></textarea>
+              <label for="conclusion">Conclusions</label>
+              <textarea
+                class="form-control"
+                id="conclusion"
+                rows="3"
+                placeholder="Your conclusions go here. max limit: 100 char"
+              ></textarea>
+            </div>
+            <h3>Footer</h3>
+            <div class="form-row">
+              <label for="basic-url">Additional Readings: </label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3"
+                    >https://example.com/</span
+                  >
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+            </div>
+            <br /><br />
+            <h3>Tags and categories</h3>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="tags">Tags</label>
+                <input
+                  type="text"
+                  value=""
+                  data-role="tagsinput"
+                  placeholder="Add tags by putting ,"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="categories">Categories</label>
+                <select multiple class="form-control" id="categories">
+                  <option>Food</option>
+                  <option>Clothing</option>
+                  <option>Health</option>
+                  <option>Tech</option>
+                  <option>Politics</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="gridCheck"
+                />
+                <label class="form-check-label" for="gridCheck">
+                  Agree to terms and conditions
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">publish</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/bootstrap-tagsinput.js"></script>
+    <script src="js/aos.js"></script>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
