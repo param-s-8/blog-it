@@ -27,6 +27,73 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+  <?php
+        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
+        $title = trim($_POST['title']);
+        $subtitle = trim($_POST['subtitle']);
+        $intro = trim($_POST['intro']);
+        $main = trim($_POST['main']);
+        $conclusion = trim($_POST['conclusion']);
+        $additionalReadings = trim($_POST['additionalReadings']);
+        $tags = trim($_POST['tags']);
+        $categories = trim($_POST['categories']);
+        $errTitle = $errSubtitle = $errIntro = $errMain = $errConclusion = $errAdditionalReadings = $errTags = $errCategories = '';
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (empty(trim($_POST['title']))){
+                $errTitle = 'Title is required!';
+            }
+
+            if (empty(trim($_POST['subtitle']))){
+              $errSubtitle = 'Subtitle is required!';
+            }
+
+            if (empty(trim($_POST['intro']))){
+              $errIntro = 'Intro is required!';
+            }else {
+              if(strlen($_POST['intro']) > 100){
+                $errIntro = 'Intro can be maximum 100 characters!';
+              }
+            }
+
+            if (empty(trim($_POST['main']))){
+              $errMain = 'Main is required!';
+            }
+
+            if (empty(trim($_POST['conclusion']))){
+              $errConclusion = 'Conclusion is required!';
+            }else {
+              if(strlen($_POST['conclusion']) > 100){
+                $errConclusion = 'Conclusion can be maximum 100 characters!';
+              }
+            }
+
+            if (empty(trim($_POST['additionalReadings']))){
+              $errAdditionalReadings = 'AdditionalReadings is required!';
+            }else {
+              if(!filter_var($_POST['additionalReadings'], FILTER_VALIDATE_URL)){
+                $errAdditionalReadings = 'please provide a valid url!';
+              }
+            }
+
+            if (empty(trim($_POST['tags']))){
+              $errTags = 'Tags are required!';
+            }
+
+            if (!isset($_POST['categories'])){
+              $errCategories = 'Categories are required!';
+            }else {
+              if(count($_POST['categories']) < 2){
+                $errCategories = "please select atleast 2 categories";
+              }
+            }
+
+            
+            if(($errTitle == '') && ($errSubtitle == '') && ($errIntro == '') && ($errMain == '') && ($errConclusion == '') && ($errAdditionalReadings == '') && ($errTags == '') && ($errCategories == '')){
+                echo "<b>Blog Submitted</b><br><b>Title:</b> $title<br>";
+            }
+        }
+    ?>
+
     <div class="site-wrap">
       <div class="site-mobile-menu">
         <div class="site-mobile-menu-header">
@@ -97,25 +164,29 @@
               </div>
             </div>
           </div>
-          <form onsubmit="return false;">
+          <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
             <h3>Header</h3>
             <div class="form-group">
               <label for="inputTitle">Title</label>
               <input
                 type="text"
+                name="title"
                 class="form-control"
                 id="inputTitle"
                 placeholder="Your Title goes here..."
               />
+              <span class="text-danger"><?php echo $errTitle;?></span>
             </div>
             <div class="form-group">
               <label for="inputSubtitle">Subtitle</label>
               <input
                 type="text"
+                name="subtitle"
                 class="form-control"
                 id="inputSubtitle"
                 placeholder="your subtitle goes here ..."
               />
+              <span class="text-danger"><?php echo $errSubtitle;?></span>
             </div>
             <h3>Body</h3>
             <div class="form-group">
@@ -123,23 +194,29 @@
               <textarea
                 class="form-control"
                 id="intro"
+                name="intro"
                 rows="3"
                 placeholder="Please keep it short. max limit: 100 char"
               ></textarea>
+              <span class="text-danger"><?php echo $errIntro;?></span>
               <label for="main">Main Body</label>
               <textarea
                 class="form-control"
+                name="main"
                 id="main"
                 rows="6"
                 placeholder="put your blog body here"
               ></textarea>
+              <span class="text-danger"><?php echo $errMain;?></span>
               <label for="conclusion">Conclusions</label>
               <textarea
                 class="form-control"
                 id="conclusion"
+                name="conclusion"
                 rows="3"
                 placeholder="Your conclusions go here. max limit: 100 char"
               ></textarea>
+              <span class="text-danger"><?php echo $errConclusion;?></span>
             </div>
             <h3>Footer</h3>
             <div class="form-row">
@@ -151,11 +228,13 @@
                   >
                 </div>
                 <input
+                  name="additionalReadings"
                   type="text"
                   class="form-control"
                   id="basic-url"
                   aria-describedby="basic-addon3"
                 />
+                <span class="text-danger"><?php echo $errAdditionalReadings;?></span>
               </div>
             </div>
             <br /><br />
@@ -164,21 +243,24 @@
               <div class="form-group col-md-6">
                 <label for="tags">Tags</label>
                 <input
+                  name="tags"
                   type="text"
                   value=""
                   data-role="tagsinput"
                   placeholder="Add tags by putting ,"
                 />
+                <span class="text-danger"><?php echo $errTags;?></span>
               </div>
               <div class="form-group col-md-6">
                 <label for="categories">Categories</label>
-                <select multiple class="form-control" id="categories">
+                <select multiple class="form-control" name="categories[]" id="categories">
                   <option>Food</option>
                   <option>Clothing</option>
                   <option>Health</option>
                   <option>Tech</option>
                   <option>Politics</option>
                 </select>
+                <span class="text-danger"><?php echo $errCategories;?></span>
               </div>
             </div>
             <div class="form-group">
@@ -193,7 +275,7 @@
                 </label>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">publish</button>
+            <button type="submit" class="btn btn-primary" value='Submit'>publish</button>
           </form>
         </div>
       </div>
