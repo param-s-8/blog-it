@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css?family=Muli:300,400,700|Playfair+Display:400,700,900"
       rel="stylesheet"
     />
-    <title>Login</title>
+    <title>Register</title>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="fonts/icomoon/style.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -45,6 +45,13 @@
             margin-top: 5vh;
             margin-bottom: 0;
         }
+        @media screen and (min-width:700px){
+            .registerImg{
+            width:500px;
+            height:500px;
+        }
+        }
+        
     </style>
 </head>
 <body>
@@ -147,12 +154,12 @@
             <div class="row same-height justify-content-center">
               <div class="col-md-12 col-lg-10">
                 <div class="post-entry text-center">
-                  <h1 class="">Log In</h1>
+                  <h1 class="">Register Account</h1>
                 </div>
               </div>
             </div>
         </div>
-        <div class='outer-box col-md-5 mx-auto'>   
+        <!-- <div class='outer-box col-md-5 mx-auto'>   
             <div class='row'>
                 <div class='col-md-1 col-sm-12'></div>
                 <div class='col-md-10 col-sm-12'>
@@ -180,11 +187,71 @@
                 <div class='col-md-1'></div>    
             </div>
             <div class='row row2 d-flex justify-content-center '>
-                <p>Don't have an account? <a href='register.php'>Create One!</a></p>
+                <p>Don't have an account? <a href='#'>Create One!</a></p>
             </div>    
+        </div> -->
+
+        <div class='container'>
+            <div class='row'>
+                <div clas='col-md-6 col-sm-12'>
+                    <img src="images/register.png" alt='resgiter_illust' class="registerImg img-fluid img-rounded" style=''>
+                </div>
+                <div class='col-md-6 col-sm-12'>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="fname">First Name</label>
+                                <input type="text" class="form-control" id="fname" name="fname" placeholder="John">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lname">Last Name</label>
+                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Doe">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" id="password" placeholder="Password">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="cPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="cPassword" id="cPassword" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="conNo">Contact Number</label>
+                                <input type="number" class="form-control" id="conNo" id="conNo" placeholder="Enter contact number">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="prefer">Select Your Favourite Topics:</label>
+                                <select class="form-control multipicker" id="prefer" name="prefer" type="text" multiple>
+                                <option value='nature'>Nature</option>
+                                <option value='travel'>Travel</option>
+                                <option value='politics'>Politics</option>
+                                <option value='sports'>Sports</option>
+                                <option value='tech'>Tech</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Register</button>
+                        <button type="reset" class="btn btn-dark">Reset</button>
+
+                    </form>
+                </div>
+            </div>
         </div>
+
+
+
+
     </div>
-    <br><br><br><br><br><br>
+   
     </div>
 
 
