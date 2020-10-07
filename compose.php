@@ -91,7 +91,7 @@
             if(($errTitle == '') && ($errSubtitle == '') && ($errIntro == '') && ($errMain == '') && ($errConclusion == '') && ($errAdditionalReadings == '') && ($errTags == '') && ($errCategories == '')){
                 echo "<b>Blog Submitted</b><br><b>Title:</b> $title<br>";
             }
-        }
+        }      
     ?>
 
     <div class="site-wrap">
@@ -174,6 +174,7 @@
                 class="form-control"
                 id="inputTitle"
                 placeholder="Your Title goes here..."
+                value='<?php echo isset($_POST['title']) ? $_POST['title'] : ''; ?>'
               />
               <span class="text-danger"><?php echo $errTitle;?></span>
             </div>
@@ -185,6 +186,7 @@
                 class="form-control"
                 id="inputSubtitle"
                 placeholder="your subtitle goes here ..."
+                value='<?php echo isset($_POST['subtitle']) ? $_POST['subtitle'] : ''; ?>'
               />
               <span class="text-danger"><?php echo $errSubtitle;?></span>
             </div>
@@ -197,6 +199,7 @@
                 name="intro"
                 rows="3"
                 placeholder="Please keep it short. max limit: 100 char"
+                value='<?php echo isset($_POST['intro']) ? $_POST['intro'] : ''; ?>'
               ></textarea>
               <span class="text-danger"><?php echo $errIntro;?></span>
               <label for="main">Main Body</label>
@@ -206,6 +209,7 @@
                 id="main"
                 rows="6"
                 placeholder="put your blog body here"
+                value='<?php echo isset($_POST['main']) ? $_POST['main'] : ''; ?>'
               ></textarea>
               <span class="text-danger"><?php echo $errMain;?></span>
               <label for="conclusion">Conclusions</label>
@@ -215,6 +219,7 @@
                 name="conclusion"
                 rows="3"
                 placeholder="Your conclusions go here. max limit: 100 char"
+                value='<?php echo isset($_POST['conclusion']) ? $_POST['conclusion'] : ''; ?>'
               ></textarea>
               <span class="text-danger"><?php echo $errConclusion;?></span>
             </div>
@@ -233,6 +238,7 @@
                   class="form-control"
                   id="basic-url"
                   aria-describedby="basic-addon3"
+                  value='<?php echo isset($_POST['additionalReadings']) ? $_POST['additionalReadings'] : ''; ?>'
                 />
                 <span class="text-danger"><?php echo $errAdditionalReadings;?></span>
               </div>
@@ -248,6 +254,7 @@
                   value=""
                   data-role="tagsinput"
                   placeholder="Add tags by putting ,"
+                  value='<?php echo isset($_POST['tags']) ? $_POST['tags'] : ''; ?>'
                 />
                 <span class="text-danger"><?php echo $errTags;?></span>
               </div>
