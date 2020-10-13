@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -58,13 +61,20 @@
                 <ul
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
-                  <li><a href="index.php">Home</a></li>
+                  <li><a href="logout.php">Home</a></li>
                   <li><a href="category.html">Politics</a></li>
                   <li><a href="category.html">Tech</a></li>
                   <li><a href="category.html">Entertainment</a></li>
                   <li><a href="category.html">Travel</a></li>
                   <li><a href="category.html">Sports</a></li>
-                  <li><a href="login.php">Log In</a></li>
+                  <?php
+                    if(isset($_SESSION['uemail'])){
+                      echo "<li><a href='logout.php'>Log Out</a></li>";
+                      echo "<li class='disabled'><a href='#'>".$_SESSION['uemail']."</a></li>";
+                    }else{
+                      echo "<li><a href='login.php'>Log In</a></li>";
+                    }
+                  ?>
                   <li><a href="compose.php">Create Blog</a></li>
                   <li class="d-none d-lg-inline-block">
                     <a href="#" class="js-search-toggle"

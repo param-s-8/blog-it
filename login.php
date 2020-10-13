@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,12 +77,14 @@
                 
             }
             if(($errPassword == '') && ($errEmail == '')){
-                echo "<b>User Logged In</b><br><b>Email:</b> $email<br><b>Password: </b> $pw";
+                //echo "<b>User Logged In</b><br><b>Email:</b> $email<br><b>Password: </b> $pw";
+                if(isset($_POST['submit'])){
+                    $_SESSION['uemail'] = $email;
+                    header("location: index.php");
+                }
             }
         }
         
-        
-    
     ?>
     <div class="site-wrap">
       <div class="site-mobile-menu">
@@ -172,7 +178,7 @@
                             </div>
                         </div>
                         <div class='d-flex justify-content-around'>
-                            <input type="submit" class="btn btn-success" value='Submit'>
+                            <input type="submit" class="btn btn-success" value='Submit' name='submit'>
                             <input type="reset" class="btn btn-dark" value='Reset'>
                         </div>
                     </form>
@@ -181,7 +187,7 @@
             </div>
             <div class='row row2 d-flex justify-content-center '>
                 <p>Don't have an account? <a href='register.php'>Create One!</a></p>
-            </div>    
+            </div>   
         </div>
     </div>
     <br><br><br><br><br><br>
