@@ -51,42 +51,126 @@
             height:500px;
         }
         }
-        
+        .errMsg {
+                color: red;
+                margin: 0;
+                font-weight: bold;
+            }
     </style>
 </head>
 <body>
-    <?php
+      <?php
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
-        $email = $_POST['email'];
-        $pw = $_POST['password'];
-        $errEmail = $errPassword = '';
+        
+        $errFname = $errLname = $errEmail = $errPassword = $errCPassword = $errNum = $errPref = '';
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (empty($_POST['email'])){
+            
+            if(empty($_POST['email'])){
                 $errEmail = 'Email is required!';
             }else{
-                if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                    $errEmail = 'Please Provide A Valid Email-Id!';
-                }
-                
+              if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+                  $errEmail = 'Please Provide A Valid Email-Id!';
+              }else{
+                $email = $_POST['email'];
+              }
             }
 
-            if (empty($_POST['password'])){
-                $errPassword = 'Password is mandatory!';
+            if(empty(trim($_POST['fname']))){
+              $errFname = 'First Name is required!';
+            }else{
+              if (preg_match('/[\s+]|[0-9]/',trim($_POST['fname']))){
+                $errFname = 'First Name must not contain whitespaces or numbers!';
+              }else{
+                $fname = trim($_POST['fname']);
+              }
+            }
+
+            if(empty(trim($_POST['lname']))){
+              $errLname = 'Last Name is required!';
+            }else{
+              if (preg_match('/[\s+]|[0-9]/',trim($_POST['lname']))){
+                $errLname = 'Last Name must not contain whitespaces or numbers!';
+              }else{
+                $lname = trim($_POST['lname']);
+              }
+            }
+
+            if(empty($_POST['password'])){
+              $errPassword = 'Password is mandatory!';
             }else{
                 $res = array("options"=>array("regexp"=>"/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/"));
-                if(!filter_var($pw, FILTER_VALIDATE_REGEXP,$res)){
+                if(!filter_var($_POST['password'], FILTER_VALIDATE_REGEXP,$res)){
                     $errPassword = 'Please Provide A Valid Password!';
+                }else{
+                  $pw = $_POST['password'];
                 }
-                
+              }
+
+            if(empty($_POST['cPassword'])){
+              $errCPassword = 'Please Confirm your password!';
+            }else{
+              if($_POST['password']!=$_POST['cPassword']){
+                $errCPassword = 'Passwords do not match!';
+              }else{
+                $cpw = $_POST['cPassword'];
+              }
             }
-            if(($errPassword == '') && ($errEmail == '')){
-                echo "<b>User Logged In</b><br><b>Email:</b> $email<br><b>Password: </b> $pw";
+            
+
+
+            if(empty($_POST['conNo'])){
+              $errNum = 'Contact Number is required!';
+            }else{
+              $min = 1000000000; $max = 9999999999;
+              if (filter_var($_POST['conNo'], FILTER_VALIDATE_INT, array("options" => array("min_range"=>$min, "max_range"=>$max))) === false){
+                  $errNum = 'Please Enter Valid 10 digit Number!';
+              }else{
+                $num = $_POST['conNo'];
+              }
+            }
+            
+
+            if(!isset($_POST['prefer'])){
+              $errPref = 'Please Enter Your Preferences!';
+            }else{
+              if(count($_POST['prefer']) < 2){
+                $errPref = "Please Select Atleast 2 Categories";
+              }else{
+                $pref = $_POST['prefer'];
+              }
+            }
+
+            if(($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errPassword == '')&&($errCPassword == '')&&($errNum == '')&&($errPref == '')){
+                /* include_once('regInsert.php'); */
+                include_once('creds.php');
+                if(!$conn){
+                    die("<br>Error in creating a connection: " . mysqli_connect_error());
+                }else{
+
+                    if(isset($_POST['submit'])){
+                        $final = '';
+                        foreach($pref as $select){
+                          $final .= $select;
+                          $final .= ' ';
+                        }
+                        $query = "INSERT INTO registered_users VALUES('$fname','$lname','$email','$pw',$num,'$final')";
+                        if(mysqli_query($conn,$query)){
+                            echo "<script>
+                                alert('Registration successful');
+                                location='login.php';
+                              </script>";
+                             
+                        }else{
+                            echo "<script>
+                                alert('A problem occurred while registration ');
+                                </script>";
+                        }
+                    }
+                }
             }
         }
-        
-        
+      ?>
     
-    ?>
     <div class="site-wrap">
       <div class="site-mobile-menu">
         <div class="site-mobile-menu-header">
@@ -197,50 +281,80 @@
                     <img src="images/register.png" alt='resgiter_illust' class="registerImg img-fluid img-rounded" style=''>
                 </div>
                 <div class='col-md-6 col-sm-12'>
-                    <form>
+                    <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="fname">First Name</label>
-                                <input type="text" class="form-control" id="fname" name="fname" placeholder="John">
+                                <input type="text" class="form-control" id="fname" name="fname" placeholder="John"
+                                  value = "<?php echo isset($_POST['fname']) ? $_POST['fname'] : ''; ?>"
+                                >
+                                <span class='text-danger'><?php echo $errFname;?></span>
                             </div>
+                            
+                            
                             <div class="form-group col-md-6">
                                 <label for="lname">Last Name</label>
-                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Doe">
+                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Doe"
+                                value = "<?php echo isset($_POST['lname']) ? $_POST['lname'] : ''; ?>"
+                                >
+                                <span class='text-danger'><?php echo $errLname;?></span>
                             </div>
+                            
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com"
+                              value = "<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>"
+                            >
+                            <span class='text-danger'><?php echo $errEmail;?></span>
                         </div>
+                        
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" id="password" placeholder="Password">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                                value = "<?php echo isset($_POST['password']) ? $_POST['passsword'] : ''; ?>"
+                                >
+                                <span class='text-danger'><?php echo $errPassword;?></span>
                             </div>
+                            
                             <div class="form-group col-md-6">
                                 <label for="cPassword">Confirm Password</label>
-                                <input type="password" class="form-control" id="cPassword" id="cPassword" placeholder="Confirm Password">
+                                <input type="password" class="form-control" id="cPassword" name="cPassword" placeholder="Confirm Password"
+                                value = "<?php echo isset($_POST['cPassword']) ? $_POST['cPassword'] : ''; ?>"
+                                >
+                                <span class='text-danger'><?php echo $errCPassword;?></span>
                             </div>
+                            
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="conNo">Contact Number</label>
-                                <input type="number" class="form-control" id="conNo" id="conNo" placeholder="Enter contact number">
+                                <input type="number" class="form-control" id="conNo" name="conNo" placeholder="Enter contact number" 
+                                value = "<?php echo isset($_POST['conNo']) ? $_POST['conNo'] : ''; ?>"
+                                > 
+                                <span class='text-danger'><?php echo $errNum;?></span>
                             </div>
+                            
+                            
+                            
                             <div class="form-group col-md-6">
                                 <label for="prefer">Select Your Favourite Topics:</label>
-                                <select class="form-control multipicker" id="prefer" name="prefer" type="text" multiple>
+                                <select class="form-control multipicker" id="prefer" name="prefer[]" type="text" multiple>
                                 <option value='nature'>Nature</option>
                                 <option value='travel'>Travel</option>
                                 <option value='politics'>Politics</option>
                                 <option value='sports'>Sports</option>
                                 <option value='tech'>Tech</option>
                                 </select>
+                                <span class='text-danger'><?php echo $errPref;?></span>
                             </div>
+                            
                         </div>
-                        
-                        <button type="submit" class="btn btn-success">Register</button>
-                        <button type="reset" class="btn btn-dark">Reset</button>
+                        <input type="submit" class="btn btn-success" value='Register' name='submit'>
+                        <input type="reset" class="btn btn-dark" value='Reset'>
+                        <!-- <button type="submit" class="btn btn-success" value='submit'>Register</button>
+                        <button type="reset" class="btn btn-dark" value='reset'>Reset</button> -->
 
                     </form>
                 </div>
