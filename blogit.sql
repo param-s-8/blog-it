@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2020 at 01:22 PM
+-- Generation Time: Oct 20, 2020 at 03:27 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.28
 
@@ -34,17 +34,19 @@ CREATE TABLE `registered_users` (
   `email` varchar(50) NOT NULL,
   `password` text NOT NULL,
   `number` bigint(10) NOT NULL,
-  `preferences` text NOT NULL
+  `preferences` text NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `registered_users`
 --
 
-INSERT INTO `registered_users` (`fname`, `lname`, `email`, `password`, `number`, `preferences`) VALUES
-('Param', 'Shendekar', 'paramv@gmail.com', 'Param123', 9830236209, 'nature travel politics sports tech '),
-('Param', 'Shendekar', 'paramvs8@gmail.com', 'Param123', 9930236209, 'nature travel politics '),
-('Param', 'Shendekar', 'paramvs@gmail.com', 'Param123', 9930236208, 'nature politics sports tech ');
+INSERT INTO `registered_users` (`fname`, `lname`, `email`, `password`, `number`, `preferences`, `user_id`) VALUES
+('John', 'Cena', 'cantseeme@gmail.com', 'JohnCena123', 9820776054, 'nature travel politics sports ', 'U104'),
+('Param', 'Shendekar', 'paramv@gmail.com', 'Param123', 9830236209, 'nature travel politics sports tech ', 'U101'),
+('Param', 'Shendekar', 'paramvs8@gmail.com', 'Param123', 9930236209, 'nature travel politics ', 'U103'),
+('Param', 'Shendekar', 'paramvs@gmail.com', 'Param123', 9930236208, 'nature politics sports tech ', 'U102');
 
 --
 -- Indexes for dumped tables
@@ -54,7 +56,9 @@ INSERT INTO `registered_users` (`fname`, `lname`, `email`, `password`, `number`,
 -- Indexes for table `registered_users`
 --
 ALTER TABLE `registered_users`
-  ADD PRIMARY KEY (`email`);
+  ADD PRIMARY KEY (`email`),
+  ADD UNIQUE KEY `user_id_2` (`user_id`),
+  ADD KEY `user_id` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
