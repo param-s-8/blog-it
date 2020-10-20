@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+  //TODO add author to the blog using session
   <?php
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
         $title = trim($_POST['title']);
@@ -36,7 +37,7 @@
         $conclusion = trim($_POST['conclusion']);
         $additionalReadings = trim($_POST['additionalReadings']);
         $tags = trim($_POST['tags']);
-        $categories = trim($_POST['categories']);
+        $categories = $_POST['categories'];
         $errTitle = $errSubtitle = $errIntro = $errMain = $errConclusion = $errAdditionalReadings = $errTags = $errCategories = '';
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (empty(trim($_POST['title']))){
@@ -89,9 +90,31 @@
 
             
             if(($errTitle == '') && ($errSubtitle == '') && ($errIntro == '') && ($errMain == '') && ($errConclusion == '') && ($errAdditionalReadings == '') && ($errTags == '') && ($errCategories == '')){
-                echo "<b>Blog Submitted</b><br><b>Title:</b> $title<br>";
+              include_once('creds.php');
+                if(!$conn){
+                    die("<br>Error in creating a connection: " . mysqli_connect_error());
+                }else{
+                  $final = '';
+                    foreach($categories as $select){
+                          $final .= $select;
+                          $final .= ' ';
+                    }
+
+                    if(isset($_POST['submit'])){
+
+                        $query = "INSERT INTO blogs (title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
+                        if(mysqli_query($conn,$query)){
+                              echo "Record inserted successfully.<br><br><a href=\"blog.php\">Show Data</a>";
+
+                        }else{
+                            echo "<script>
+                                alert('A problem occurred while posting blog ');
+                                </script>";
+                        }
+                    }  
             }
-        }      
+        }  
+      }    
     ?>
 
     <div class="site-wrap">
@@ -260,12 +283,12 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="categories">Categories</label>
-                <select multiple class="form-control" name="categories[]" id="categories">
-                  <option>Food</option>
-                  <option>Clothing</option>
-                  <option>Health</option>
-                  <option>Tech</option>
-                  <option>Politics</option>
+                <select class="form-control multipicker" id="categories" name="categories[]" type="text" multiple>
+                  <option value='nature'>Nature</option>
+                  <option value='travel'>Travel</option>
+                  <option value='politics'>Politics</option>
+                  <option value='sports'>Sports</option>
+                  <option value='tech'>Tech</option>
                 </select>
                 <span class="text-danger"><?php echo $errCategories;?></span>
               </div>
@@ -282,7 +305,7 @@
                 </label>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" value='Submit'>publish</button>
+            <button name="submit" type="submit" class="btn btn-primary" value='Submit'>publish</button>
           </form>
         </div>
       </div>
