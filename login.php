@@ -57,7 +57,9 @@
         $email = $_POST['email'];
         $pw = $_POST['password'];
         $errEmail = $errPassword = '';
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            //Email validation
             if (empty($_POST['email'])){
                 $errEmail = 'Email is required!';
             }else{
@@ -66,7 +68,7 @@
                 }
                 
             }
-
+            //Password Validation
             if (empty($_POST['password'])){
                 $errPassword = 'Password is mandatory!';
             }else{
@@ -74,18 +76,46 @@
                 if(!filter_var($pw, FILTER_VALIDATE_REGEXP,$res)){
                     $errPassword = 'Please Provide A Valid Password!';
                 }
-                
             }
+            
             if(($errPassword == '') && ($errEmail == '')){
                 //echo "<b>User Logged In</b><br><b>Email:</b> $email<br><b>Password: </b> $pw";
-                if(isset($_POST['submit'])){
-                    $_SESSION['uemail'] = $email;
-                    header("location: index.php");
+
+                include_once('creds.php');
+                if(!$conn){
+                    die("<br>Error in creating a connection: " . mysqli_connect_error());
+                }else{
+                  if(isset($_POST['submit'])){
+
+                    $email = mysqli_real_escape_string($conn,$_POST['email']);
+                    $passw = mysqli_real_escape_string($conn,$_POST['password']);
+                    $query = "SELECT * FROM registered_users WHERE email='$email' AND password ='$passw' " ;
+                    $result = mysqli_query($conn,$query);
+                    if (mysqli_num_rows($result)==1){
+                      $row = mysqli_fetch_assoc($result);
+  
+                      $_SESSION['uemail'] = $row['email'];
+                      $_SESSION['ufname'] = $row['fname'];
+                      $_SESSION['ulname'] = $row['lname'];
+                      $_SESSION['user_id'] = $row['user_id'];
+                      $_SESSION['unumber'] = $row['number'];
+                      $_SESSION['upref'] = $row['preferences'];
+                      header("location: index.php");
+                    }else{
+                      echo "<script>
+                      alert('Invalid email/password combination!');
+                      </script>";
+                    }
+                    
+                  }
                 }
+
+                
             }
         }
         
     ?>
+
     <div class="site-wrap">
       <div class="site-mobile-menu">
         <div class="site-mobile-menu-header">
@@ -166,14 +196,18 @@
                         <div class="form-group row">
                             <label for="email" class="col-md-3 col-form-label">Email</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email"
+                                value = "<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>"
+                                >
                                 <span class="errMsg"><?php echo $errEmail;?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-md-3 col-form-label">Password</label>
                             <div class="col-md-9">
-                                <input type="password" class="form-control" id="password" name='password' placeholder="Password">
+                                <input type="password" class="form-control" id="password" name='password' placeholder="Password"
+                                value = "<?php echo isset($_POST['password']) ? $_POST['passsword'] : ''; ?>"
+                                >
                                 <span class="errMsg"><?php echo $errPassword;?></span>
                             </div>
                         </div>
@@ -194,66 +228,8 @@
     </div>
 
 
-
-    <div class="site-footer">
-        <div class="container">
-          <div class="row mb-5">
-            <div class="col-md-4">
-              <h3 class="footer-heading mb-4">About Us</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Placeat reprehenderit magnam deleniti quasi saepe, consequatur
-                atque sequi delectus dolore veritatis obcaecati quae, repellat
-                eveniet omnis, voluptatem in. Soluta, eligendi, architecto.
-              </p>
-            </div>
-            <div class="col-md-3 ml-auto">
-              <!-- <h3 class="footer-heading mb-4">Navigation</h3> -->
-              <ul class="list-unstyled float-left mr-5">
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Advertise</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Subscribes</a></li>
-              </ul>
-              <ul class="list-unstyled float-left">
-                <li><a href="#">Travel</a></li>
-                <li><a href="#">Lifestyle</a></li>
-                <li><a href="#">Sports</a></li>
-                <li><a href="#">Nature</a></li>
-              </ul>
-            </div>
-            <div class="col-md-4">
-              <div>
-                <h3 class="footer-heading mb-4">Connect With Us</h3>
-                <p>
-                  <a href="#"
-                    ><span class="icon-facebook pt-2 pr-2 pb-2 pl-0"></span
-                  ></a>
-                  <a href="#"><span class="icon-twitter p-2"></span></a>
-                  <a href="#"><span class="icon-instagram p-2"></span></a>
-                  <a href="#"><span class="icon-rss p-2"></span></a>
-                  <a href="#"><span class="icon-envelope p-2"></span></a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 text-center">
-              <p>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>
-                All rights reserved | This template is made with
-                <i class="icon-heart text-danger" aria-hidden="true"></i> by
-                <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              </p>
-            </div>
-          </div>
-        </div>
-    </div>
+    <?php include_once('footer.php'); ?>
+    
 
 
     <script src="js/jquery-3.3.1.min.js"></script>
