@@ -25,6 +25,93 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+
+  <?php
+        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
+        
+        $errFname = $errLname = $errEmail = $errNum = $errPref = '';
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            
+            if(empty($_POST['email'])){
+                $errEmail = 'Email is required!';
+            }else{
+              if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+                  $errEmail = 'Please Provide A Valid Email-Id!';
+              }else{
+                $email = $_POST['email'];
+              }
+            }
+
+            if(empty(trim($_POST['fname']))){
+              $errFname = 'First Name is required!';
+            }else{
+              if (preg_match('/[\s+]|[0-9]/',trim($_POST['fname']))){
+                $errFname = 'First Name must not contain whitespaces or numbers!';
+              }else{
+                $fname = trim($_POST['fname']);
+              }
+            }
+
+            if(empty(trim($_POST['lname']))){
+              $errLname = 'Last Name is required!';
+            }else{
+              if (preg_match('/[\s+]|[0-9]/',trim($_POST['lname']))){
+                $errLname = 'Last Name must not contain whitespaces or numbers!';
+              }else{
+                $lname = trim($_POST['lname']);
+              }
+            }
+
+
+            if(empty($_POST['conNo'])){
+              $errNum = 'Contact Number is required!';
+            }else{
+              $min = 1000000000; $max = 9999999999;
+              if (filter_var($_POST['conNo'], FILTER_VALIDATE_INT, array("options" => array("min_range"=>$min, "max_range"=>$max))) === false){
+                  $errNum = 'Please Enter Valid 10 digit Number!';
+              }else{
+                $num = $_POST['conNo'];
+              }
+            }
+
+            if(($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errNum == '')&&($errPref == '')){
+                /* include_once('regInsert.php'); */
+                include_once('creds.php');
+                if(!$conn){
+                    die("<br>Error in creating a connection: " . mysqli_connect_error());
+                }else{
+                    
+                    if(isset($_POST['submit'])){
+                        $sess_id = $_SESSION['user_id'];
+                        
+
+                        $query = "UPDATE registered_users SET fname = '$fname' , lname = '$lname' , email = '$email', 
+                        number = $num WHERE user_id='$sess_id' ";
+                        
+                        if(mysqli_query($conn,$query)){
+                            echo "<script>
+                                alert('Profile updated succesfully!');
+                              </script>";
+                             
+                            $_SESSION['uemail'] = $email;
+                            $_SESSION['ufname'] = $fname;
+                            $_SESSION['ulname'] = $lname;
+                            $_SESSION['unumber'] = $num;
+                            $_SESSION['upref'] = $final;
+
+                        }else{
+                            echo "<script>
+                                alert('A problem occurred while registration ');
+                                </script>";
+                        }
+                    }
+                }
+            }
+        }
+      ?>
+
+
+
     <div class="site-wrap">
       <div class="site-mobile-menu">
         <div class="site-mobile-menu-header">
@@ -70,7 +157,7 @@
                   <?php
                     if(isset($_SESSION['user_id'])){
                       echo "<li><a href='logout.php'>Log Out</a></li>";
-                      echo "<li class='disabled'><a href='#'>"."Hello, ".$_SESSION['ufname']."</a></li>";
+                      echo "<li class='disabled'><a href='user_profile.php'>"."Hello, ".$_SESSION['ufname']."</a></li>";
                     }else{
                       echo "<li><a href='login.php'>Log In</a></li>";
                     }
@@ -115,8 +202,8 @@
                         <div class="d-flex flex-column align-items-center text-center">
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                         <div class="mt-3">
-                            <h4>John Doe</h4>
-                            <p class="text-secondary mb-1">Full Stack Developer</p>
+                            <h4><?php echo $_SESSION['ufname']." ". $_SESSION['ulname']; ?></h4>
+                            <p class="text-secondary mb-1"><?php echo $_SESSION['uemail']; ?></p>
                             <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
                             <button class="btn btn-primary">Follow</button>
                             <button class="btn btn-outline-primary">Message</button>
@@ -153,54 +240,83 @@
                 </div>
 
                 <div class="col-md-8">
+                  
                     <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Full Name</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                            Kenneth Valdez
-                        </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Email</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                            fip@jukmuh.al
-                        </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Phone</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                            (239) 816-9029
-                        </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Mobile</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                            (320) 380-4539
-                        </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                        <div class="col-sm-3">
-                            <h6 class="mb-0">Address</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                            Bay Area, San Francisco, CA
-                        </div>
-                        </div>
+                      <div class="card-body">
+                        <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                          <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">First Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control" id="fname" name="fname" placeholder="John"
+                                  value = "<?php echo $_SESSION['ufname'];?>"
+                                >
+                                <span class='text-danger'><?php echo $errFname;?></span>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Last Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" id="lname" name="lname" placeholder="Doe"
+                              value = "<?php echo $_SESSION['ulname'];?>"
+                            >
+                            <span class='text-danger'><?php echo $errLname;?></span>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                          <div class="col-sm-3">
+                              <h6 class="mb-0">Email</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                          <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com"
+                            value = "<?php echo $_SESSION['uemail'];?>"
+                          >
+                          <span class='text-danger'><?php echo $errEmail;?></span>
+                          </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                          <div class="col-sm-3">
+                              <h6 class="mb-0">Contact Number</h6>
+                          </div>
+                          <div class="col-sm-9 text-secondary">
+                            <input type="number" class="form-control" id="conNo" name="conNo" placeholder="Enter contact number" 
+                            value = "<?php echo $_SESSION['unumber'];?>"
+                            >
+                            <span class='text-danger'><?php echo $errNum;?></span> 
+                          </div>
+                          </div>
+                          <!-- <hr>
+                          <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                              <select class="form-control multipicker" id="prefer" name="prefer[]" type="text" multiple>
+                                <option value='nature' selected>Nature</option>
+                                <option value='travel'>Travel</option>
+                                <option value='politics'>Politics</option>
+                                <option value='sports'>Sports</option>
+                                <option value='tech'>Tech</option>
+                              </select>
+                              <span class='text-danger'><?php echo $errPref;?></span>
+                            </div>
+                          </div> -->
+                          <hr>
+                          <div class="row">
+                          <input type="submit" class="btn btn-success ml-3" value='Save Changes' name='submit'>
+                          </div>
+                        </form>
+                      </div>
                     </div>
-                    </div>
+                  
+
+                    
                     <div class="row gutters-sm">
                     <div class="col-sm-6 mb-3">
                         <div class="card h-100">

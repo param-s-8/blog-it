@@ -70,7 +70,7 @@
                   <?php
                     if(isset($_SESSION['user_id'])){
                       echo "<li><a href='logout.php'>Log Out</a></li>";
-                      echo "<li class='disabled'><a href='#'>"."Hello, ".$_SESSION['ufname']."</a></li>";
+                      echo "<li class='disabled'><a href='user_profile.php'>"."Hello, ".$_SESSION['ufname']."</a></li>";
                     }else{
                       echo "<li><a href='login.php'>Log In</a></li>";
                     }
