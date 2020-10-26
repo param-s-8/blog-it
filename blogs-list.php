@@ -117,12 +117,13 @@
             </thead>
             <tbody?>
             <?php
+            $author = $_SESSION["user_id"];
             include_once('creds.php');
             if(!$conn){
                 die("<br>Error in creating a connection: " . mysqli_connect_error());
             }else{
 
-            $query = mysqli_query($conn, "SELECT * FROM blogs")
+            $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author='$author'")
               or die (mysqli_error($conn));
 
             while ($row = mysqli_fetch_array($query)) {
