@@ -30,9 +30,9 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-  //TODO add author to the blog using session
   <?php
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
+        $author = $_SESSION["user_id"];
         $title = trim($_POST['title']);
         $subtitle = trim($_POST['subtitle']);
         $intro = trim($_POST['intro']);
@@ -88,6 +88,8 @@
             }else {
               if(count($_POST['categories']) < 2){
                 $errCategories = "please select atleast 2 categories";
+              }else {
+                $categories = implode(',', $categories);
               }
             }
 
@@ -105,7 +107,7 @@
 
                     if(isset($_POST['submit'])){
 
-                        $query = "INSERT INTO blogs (title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
+                        $query = "INSERT INTO blogs (author, title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$author', '$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
                         if(mysqli_query($conn,$query)){
                               echo "Record inserted successfully.<br><br><a href=\"blog.php\">Show Data</a>";
 
