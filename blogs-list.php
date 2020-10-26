@@ -144,7 +144,7 @@
                 <td>{$row['additionalReadings']}</td>
                 <td>{$row['tags']}</td>
                 <td>{$row['categories']}</td>
-                <td><a href=\"update.php?blog_id=$id\" class=\"btn btn-success btn-lg active\" role=\"button\" aria-pressed=\"true\">Update Blog</a></td>
+                <td><a href=\"compose.php?blog_id=$id\" class=\"btn btn-success btn-lg active\" role=\"button\" aria-pressed=\"true\">Update Blog</a></td>
                 <td><a href=\"blog.php?blog_id=$id\" class=\"btn btn-primary btn-lg active\" role=\"button\" aria-pressed=\"true\">View Blog</a></td>
               </tr>\n";
             }

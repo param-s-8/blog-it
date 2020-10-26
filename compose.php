@@ -31,16 +31,32 @@
   </head>
   <body>
   <?php
-        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
-        $author = $_SESSION["user_id"];
-        $title = trim($_POST['title']);
-        $subtitle = trim($_POST['subtitle']);
-        $intro = trim($_POST['intro']);
-        $main = trim($_POST['main']);
-        $conclusion = trim($_POST['conclusion']);
-        $additionalReadings = trim($_POST['additionalReadings']);
-        $tags = trim($_POST['tags']);
-        $categories = $_POST['categories'];
+      error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
+      $author = $_SESSION["user_id"];
+      $queries = array();
+      parse_str($_SERVER['QUERY_STRING'], $queries);
+      $blog_id = $queries['blog_id'];
+
+      include_once('creds.php');
+      if(!$conn){
+          die("<br>Error in creating a connection: " . mysqli_connect_error());
+      }else{
+
+        $blog_query = mysqli_query($conn, "SELECT * FROM blogs WHERE id='$blog_id'")
+          or die (mysqli_error($conn));
+
+        $blog = mysqli_fetch_array($blog_query);
+
+      }
+        $title = isset($_POST['title']) ? trim($_POST['title']) : $blog['title'];
+        $subtitle = isset($_POST['subtitle']) ? trim($_POST['subtitle']) : $blog['subtitle'];
+        $intro = isset($_POST['intro']) ? trim($_POST['intro']): $blog['intro'];
+        $main = isset($_POST['main']) ? trim($_POST['main']) : $blog['main'];
+        $conclusion = isset($_POST['conclusion']) ? trim($_POST['conclusion']) : $blog['conclusion'];
+        $additionalReadings = isset($_POST['additionalReadings']) ? trim($_POST['additionalReadings']) : $blog['additionalReadings'];
+        $tags = isset($_POST['tags']) ? trim($_POST['tags']) : $blog['tags'];
+        $categories = isset($_POST['categories']) ? $_POST['categories']: explode(',',$blog['categories']);
+        
         $errTitle = $errSubtitle = $errIntro = $errMain = $errConclusion = $errAdditionalReadings = $errTags = $errCategories = '';
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (empty(trim($_POST['title']))){
@@ -106,16 +122,32 @@
                     }
 
                     if(isset($_POST['submit'])){
+                      $query = '';
+                        if(isset($_POST['blog_id'])){
+                          $blog_id = $_POST['blog_id'];
+                          $query = "UPDATE blogs SET title='$title', subtitle='$subtitle', intro='$intro', main='$main', conclusion='$conclusion', additionalReadings='$additionalReadings', tags='$tags', categories='$categories' WHERE id='$blog_id'";
+                          if(mysqli_query($conn,$query)){
+                            echo "Records updated successfully.<br><br><a href=\"blogs-list.php\">Show Data</a>";
 
-                        $query = "INSERT INTO blogs (author, title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$author', '$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
-                        if(mysqli_query($conn,$query)){
-                              echo "Record inserted successfully.<br><br><a href=\"blog.php\">Show Data</a>";
-
+                          }else{
+                              echo "<script>
+                                  alert('A problem occurred while posting blog ');
+                                  </script>";
+                          }
                         }else{
-                            echo "<script>
-                                alert('A problem occurred while posting blog ');
-                                </script>";
+                          echo "blog_id" . $blog_id;
+                          $query = "INSERT INTO blogs (author, title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$author', '$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
+                          if(mysqli_query($conn,$query)){
+                            echo "Record inserted successfully.<br><br><a href=\"blogs-list.php\">Show Data</a>";
+
+                          }else{
+                              echo "<script>
+                                  alert('A problem occurred while posting blog ');
+                                  </script>";
+                          }
                         }
+                        
+                        
                     }  
             }
         }  
@@ -187,7 +219,7 @@
             <div class="row same-height justify-content-center">
               <div class="col-md-12 col-lg-10">
                 <div class="post-entry text-center">
-                  <h1 class="">Publish A Blog</h1>
+                  <h1 class=""><?php echo isset($blog_id) ? "Update Blog" : "Publish A Blog" ?></h1>
                 </div>
               </div>
             </div>
@@ -202,7 +234,7 @@
                 class="form-control"
                 id="inputTitle"
                 placeholder="Your Title goes here..."
-                value='<?php echo isset($_POST['title']) ? $_POST['title'] : ''; ?>'
+                value='<?php echo $title; ?>'
               />
               <span class="text-danger"><?php echo $errTitle;?></span>
             </div>
@@ -214,7 +246,7 @@
                 class="form-control"
                 id="inputSubtitle"
                 placeholder="your subtitle goes here ..."
-                value='<?php echo isset($_POST['subtitle']) ? $_POST['subtitle'] : ''; ?>'
+                value='<?php echo $subtitle; ?>'
               />
               <span class="text-danger"><?php echo $errSubtitle;?></span>
             </div>
@@ -227,8 +259,7 @@
                 name="intro"
                 rows="3"
                 placeholder="Please keep it short. max limit: 100 char"
-                value='<?php echo isset($_POST['intro']) ? $_POST['intro'] : ''; ?>'
-              ></textarea>
+              ><?php echo $intro; ?></textarea>
               <span class="text-danger"><?php echo $errIntro;?></span>
               <label for="main">Main Body</label>
               <textarea
@@ -237,8 +268,7 @@
                 id="main"
                 rows="6"
                 placeholder="put your blog body here"
-                value='<?php echo isset($_POST['main']) ? $_POST['main'] : ''; ?>'
-              ></textarea>
+              ><?php echo $main; ?></textarea>
               <span class="text-danger"><?php echo $errMain;?></span>
               <label for="conclusion">Conclusions</label>
               <textarea
@@ -247,8 +277,7 @@
                 name="conclusion"
                 rows="3"
                 placeholder="Your conclusions go here. max limit: 100 char"
-                value='<?php echo isset($_POST['conclusion']) ? $_POST['conclusion'] : ''; ?>'
-              ></textarea>
+              ><?php echo $conclusion; ?></textarea>
               <span class="text-danger"><?php echo $errConclusion;?></span>
             </div>
             <h3>Footer</h3>
@@ -257,6 +286,7 @@
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon3"
+                    
                     >https://example.com/</span
                   >
                 </div>
@@ -266,7 +296,7 @@
                   class="form-control"
                   id="basic-url"
                   aria-describedby="basic-addon3"
-                  value='<?php echo isset($_POST['additionalReadings']) ? $_POST['additionalReadings'] : ''; ?>'
+                  value='<?php echo $additionalReadings; ?>'
                 />
                 <span class="text-danger"><?php echo $errAdditionalReadings;?></span>
               </div>
@@ -279,21 +309,20 @@
                 <input
                   name="tags"
                   type="text"
-                  value=""
                   data-role="tagsinput"
                   placeholder="Add tags by putting ,"
-                  value='<?php echo isset($_POST['tags']) ? $_POST['tags'] : ''; ?>'
+                  value='<?php echo $tags ?>'
                 />
                 <span class="text-danger"><?php echo $errTags;?></span>
               </div>
               <div class="form-group col-md-6">
                 <label for="categories">Categories</label>
                 <select class="form-control multipicker" id="categories" name="categories[]" type="text" multiple>
-                  <option value='nature'>Nature</option>
-                  <option value='travel'>Travel</option>
-                  <option value='politics'>Politics</option>
-                  <option value='sports'>Sports</option>
-                  <option value='tech'>Tech</option>
+                  <option <?php echo in_array("nature", $categories) ? " selected=\"selected\"" : "" ?> value='nature'>Nature</option>
+                  <option <?php echo in_array("travel", $categories) ? " selected=\"selected\"" : "" ?> value='travel'>Travel</option>
+                  <option <?php echo in_array("politics", $categories) ? " selected=\"selected\"" : "" ?> value='politics'>Politics</option>
+                  <option <?php echo in_array("sports", $categories) ? " selected=\"selected\"" : "" ?> value='sports'>Sports</option>
+                  <option <?php echo in_array("tech", $categories) ? " selected=\"selected\"" : "" ?> value='tech'>Tech</option>
                 </select>
                 <span class="text-danger"><?php echo $errCategories;?></span>
               </div>
@@ -310,7 +339,8 @@
                 </label>
               </div>
             </div>
-            <button name="submit" type="submit" class="btn btn-primary" value='Submit'>publish</button>
+            <input type="hidden" name="blog_id" value=<?php echo $blog_id; ?>>
+            <button name="submit" type="submit" class="btn btn-primary" value='Submit'><?php echo isset($blog_id) ? "Update" : "Publish" ?></button>
           </form>
         </div>
       </div>
