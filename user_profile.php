@@ -314,10 +314,62 @@
                         </form>
                       </div>
                     </div>
+
+                  <div class='row'>
+                    <div class='col-md-12'>
+
+                    <table border="1" align="center" class="table">
+            <thead class="thead-dark">
+              <!-- <th scope="col">#</th> -->
+              <!-- <th scope="col">Author</th> -->
+              <th scope="col">Title</th>
+              <!-- <th scope="col">Subtitle</th> -->
+              <!-- <th scope="col">Intro</th> -->
+              <th scope="col">Main</th>
+              <!-- <th scope="col">Conclusion</th> -->
+              <!-- <th scope="col">Additional Readings</th> -->
+              <th scope="col">Tags</th>
+              <!-- <th scope="col">Categories</th> -->
+              <th scope="col">Edit Blog</th>
+              <th scope="col">View Blog</th>
+            </thead>
+            <tbody>
+            <?php
+            $author = $_SESSION["user_id"];
+            include_once('creds.php');
+            if(!$conn){
+                die("<br>Error in creating a connection: " . mysqli_connect_error());
+            }else{
+
+            $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author='$author'")
+              or die (mysqli_error($conn));
+
+            while ($row = mysqli_fetch_array($query)) {
+              $main = substr($row['main'],0,50);
+              $intro = substr($row['intro'],0,50);
+              $conclusion = substr($row['conclusion'],0,50);
+              $id = $row['id'];
+              // $categories = implode(',', $row['categories']);
+              echo
+              "<tr>
+                <td>{$row['title']}</td>
+                <td>{$main}...</td>
+                <td>{$row['tags']}</td>
+                <td><a href=\"compose.php?blog_id=$id\" class=\"btn btn-success btn-lg active\" role=\"button\" aria-pressed=\"true\">Update Blog</a></td>
+                <td><a href=\"blog.php?blog_id=$id\" class=\"btn btn-primary btn-lg active\" role=\"button\" aria-pressed=\"true\">View Blog</a></td>
+              </tr>\n";
+            }
+          }
+            ?>
+            </tbody>
+            </table>
+
+                    </div>
+                  </div>
                   
 
                     
-                    <div class="row gutters-sm">
+                    <!-- <div class="row gutters-sm">
                     <div class="col-sm-6 mb-3">
                         <div class="card h-100">
                         <div class="card-body">
@@ -372,7 +424,7 @@
                         </div>
                         </div>
                     </div>
-                    </div>
+                    </div> -->
                 </div>
 
             </div>

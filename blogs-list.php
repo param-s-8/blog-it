@@ -115,7 +115,7 @@
               <th scope="col">Edit Link</th>
               <th scope="col">View Link</th>
             </thead>
-            <tbody?>
+            <tbody>
             <?php
             $author = $_SESSION["user_id"];
             include_once('creds.php');

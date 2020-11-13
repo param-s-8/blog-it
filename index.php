@@ -61,7 +61,7 @@
                 <ul
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
-                  <li><a href="logout.php">Home</a></li>
+                  <li><a href="index.php">Home</a></li>
                   <li><a href="category.html">Politics</a></li>
                   <li><a href="category.html">Tech</a></li>
                   <li><a href="category.html">Entertainment</a></li>

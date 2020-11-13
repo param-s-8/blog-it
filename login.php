@@ -144,7 +144,7 @@
             </div>
 
             <div class="col-4 site-logo">
-              <a href="index.php" class="text-black h2 mb-0">Mini Blog</a>
+              <a href="index.php" class="text-black h2 mb-0">Blog-It</a>
             </div>
 
             <div class="col-8 text-right">
@@ -161,9 +161,7 @@
                   <li><a href="login.php">Log In</a></li>
                   <li><a href="compose.php">Create Blog</a></li>
                   <li class="d-none d-lg-inline-block">
-                    <a href="#" class="js-search-toggle"
-                      ><span class="icon-search"></span
-                    ></a>
+                    <a href="#" class="js-search-toggle"><span class="icon-search"></span></a>
                   </li>
                 </ul>
               </nav>
