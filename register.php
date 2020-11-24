@@ -62,7 +62,7 @@
       <?php
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
         
-        $errFname = $errLname = $errEmail = $errPassword = $errCPassword = $errNum = $errPref = '';
+        $errFname = $errLname = $errEmail = $errPassword = $errCPassword = $errNum = $errPref = $errPic= '';
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if(empty($_POST['email'])){
@@ -139,8 +139,41 @@
                 $pref = $_POST['prefer'];
               }
             }
+            
+            $imgName = $_FILES['propic']['name'];
+            $target_dir = "media/propics/";
+            $target_path = $target_dir.basename($_FILES["propic"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-            if(($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errPassword == '')&&($errCPassword == '')&&($errNum == '')&&($errPref == '')){
+           /*  $check = getimagesize($_FILES["propic"]["tmp_name"]);
+            if($check !== false) {
+              $uploadOk = 1;
+            } else {
+              $errPic = "File is not an image.";
+              $uploadOk = 0;
+            } */
+
+
+            // Check if file already exists
+            if (file_exists($target_file)) {
+              $errPic = "Sorry, file already exists.";
+              $uploadOk = 0;
+            }
+
+            // Check file size
+            if ($_FILES["propic"]["size"] > 1000000) {
+              $errPic = "Sorry, your file is too large.";
+              $uploadOk = 0;
+            }
+
+            // Allow certain file formats
+            /* if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+              $errPic = "Sorry, only JPG, JPEG & PNG files are allowed.";
+              $uploadOk = 0;
+            } */
+
+            if(($errPic == '')&&($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errPassword == '')&&($errCPassword == '')&&($errNum == '')&&($errPref == '')){
                 /* include_once('regInsert.php'); */
                 include_once('creds.php');
                 if(!$conn){
@@ -148,6 +181,8 @@
                 }else{
 
                     if(isset($_POST['submit'])){
+
+
                         $final = '';
                         foreach($pref as $select){
                           $final .= $select;
@@ -159,6 +194,22 @@
                         $num_rows = mysqli_num_rows($queryRows);
                         $u_id = "U".($num_rows + 101);
 
+                        
+                        $imgName = strtolower($u_id).$imgName;
+
+                        if ($uploadOk == 0) {
+                          echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                        // if everything is ok, try to upload file
+                        } else {
+                          if (move_uploaded_file($_FILES["propic"]["tmp_name"], $target_dir.$imgName)) {
+                            $uploadOk = 1;
+                          } else {
+                            echo "<script>alert('Sorry there was an error uploading your file.')</script>";
+                          }
+                        }
+
+                        $query2 = "INSERT INTO proimg( userid, status, name) VALUES ('$u_id',1,'$imgName' )";
+                        mysqli_query($conn,$query2);
                         
                         $query = "INSERT INTO registered_users VALUES('$fname','$lname','$email','$pw',$num,'$final','$u_id')";
                         if(mysqli_query($conn,$query)){
@@ -295,7 +346,7 @@
                     <img src="images/register.png" alt='resgiter_illust' class="registerImg img-fluid img-rounded" style=''>
                 </div>
                 <div class='col-md-6 col-sm-12'>
-                    <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                    <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="fname">First Name</label>
@@ -315,12 +366,21 @@
                             </div>
                             
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com"
-                              value = "<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>"
-                            >
-                            <span class='text-danger'><?php echo $errEmail;?></span>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                              <label for="email">Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com"
+                                value = "<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>"
+                              >
+                              <span class='text-danger'><?php echo $errEmail;?></span>
+                          </div>
+                          <div class="form-group col-md-6">
+                              <label for="propic">Upload Profile Picture</label>
+                              <input type="file" class="form-control-file" id="propic" name="propic"
+                                value = "<?php echo isset($_POST['propic']) ? $_POST['propic'] : ''; ?>"
+                              >
+                              <span class='text-danger'><?php echo $errPic;?></span>
+                          </div>
                         </div>
                         
                         <div class="form-row">

@@ -64,7 +64,7 @@
         $tags = isset($_POST['tags']) ? trim($_POST['tags']) : $blog['tags'];
         $categories = isset($_POST['categories']) ? $_POST['categories']: explode(',',$blog['categories']);
         
-        $errTitle = $errSubtitle = $errIntro = $errMain = $errConclusion = $errAdditionalReadings = $errTags = $errCategories = '';
+        $errTitle = $errSubtitle = $errIntro = $errMain = $errConclusion = $errAdditionalReadings = $errTags = $errCategories = $errPic='';
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (empty(trim($_POST['title']))){
                 $errTitle = 'Title is required!';
@@ -116,12 +116,63 @@
               }
             }
 
+
+            $imgName = $_FILES['blogpic']['name'];
+            $target_dir = "media/blogpics/";
+            $target_path = $target_dir.basename($_FILES["blogpic"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+           /*  $check = getimagesize($_FILES["propic"]["tmp_name"]);
+            if($check !== false) {
+              $uploadOk = 1;
+            } else {
+              $errPic = "File is not an image.";
+              $uploadOk = 0;
+            } */
+
+
+            // Check if file already exists
+            if (file_exists($target_file)) {
+              $errPic = "Sorry, file already exists.";
+              $uploadOk = 0;
+            }
+
+            // Check file size
+            if ($_FILES["propic"]["size"] > 1000000) {
+              $errPic = "Sorry, your file is too large.";
+              $uploadOk = 0;
+            }
+
+            // Allow certain file formats
+            /* if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+              $errPic = "Sorry, only JPG, JPEG & PNG files are allowed.";
+              $uploadOk = 0;
+            } */
+
+
             
-            if(($errTitle == '') && ($errSubtitle == '') && ($errIntro == '') && ($errMain == '') && ($errConclusion == '') && ($errAdditionalReadings == '') && ($errTags == '') && ($errCategories == '')){
+            if(($errPic == '')&&($errTitle == '') && ($errSubtitle == '') && ($errIntro == '') && ($errMain == '') && ($errConclusion == '') && ($errAdditionalReadings == '') && ($errTags == '') && ($errCategories == '')){
               include_once('creds.php');
                 if(!$conn){
                     die("<br>Error in creating a connection: " . mysqli_connect_error());
                 }else{
+
+                  $imgName = strtolower($_SESSION['user_id']).$imgName;
+
+                  if ($uploadOk == 0) {
+                    echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                  // if everything is ok, try to upload file
+                  } else {
+                    if (move_uploaded_file($_FILES["blogpic"]["tmp_name"], $target_dir.$imgName)) {
+                      $uploadOk = 1;
+                    } else {
+                      echo "<script>alert('Sorry there was an error uploading your file.')</script>";
+                    }
+                  }
+
+
+
                   $final = '';
                     foreach($categories as $select){
                           $final .= $select;
@@ -142,11 +193,17 @@
                                   </script>";
                           }
                         }else{
-                          echo "blog_id" . $blog_id;
+
+                         
+                          //echo "blog_id" . $blog_id;
                           $query = "INSERT INTO blogs (author, title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$author', '$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
                           if(mysqli_query($conn,$query)){
                             echo "Record inserted successfully.<br><br><a href=\"blogs-list.php\">Show Data</a>";
-
+                            $query2 = "SELECT id FROM blogs WHERE author='$author' AND title='$title'";
+                            $bid = mysqli_fetch_assoc(mysqli_query($conn,$query2));
+                            $uid = $_SESSION['user_id'];
+                            $query3 = "INSERT INTO blogimg( userid, blogid, name) VALUES('$uid', $bid ,'$imgName' )";
+                            mysqli_query($conn,$query3);
                           }else{
                               echo "<script>
                                   alert('A problem occurred while posting blog ');
@@ -300,10 +357,7 @@
               <label for="basic-url">Additional Readings: </label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon3"
-                    
-                    >https://example.com/</span
-                  >
+                  <span class="input-group-text" id="basic-addon3">https://example.com/</span>
                 </div>
                 <input
                   name="additionalReadings"
@@ -319,7 +373,7 @@
             <br /><br />
             <h3>Tags and categories</h3>
             <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-4">
                 <label for="tags">Tags</label>
                 <input
                   name="tags"
@@ -330,7 +384,7 @@
                 />
                 <span class="text-danger"><?php echo $errTags;?></span>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-4">
                 <label for="categories">Categories</label>
                 <select class="form-control multipicker" id="categories" name="categories[]" type="text" multiple>
                   <option <?php echo in_array("nature", $categories) ? " selected=\"selected\"" : "" ?> value='nature'>Nature</option>
@@ -340,6 +394,11 @@
                   <option <?php echo in_array("tech", $categories) ? " selected=\"selected\"" : "" ?> value='tech'>Tech</option>
                 </select>
                 <span class="text-danger"><?php echo $errCategories;?></span>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="blogpic">Blog Image</label>
+                <input type='file' class='form-control-file' name='blogpic' id='blogpic'>
+                <span class="text-danger"><?php echo $errPic;?></span>
               </div>
             </div>
             <div class="form-group">

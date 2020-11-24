@@ -148,7 +148,7 @@
                 <ul
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
-                  <li><a href="logout.php">Home</a></li>
+                  <li><a href="index.php">Home</a></li>
                   <li><a href="category.html">Politics</a></li>
                   <li><a href="category.html">Tech</a></li>
                   <li><a href="category.html">Entertainment</a></li>
@@ -200,13 +200,28 @@
                     <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                        <?php
+                          include_once('creds.php');
+                          if(!$conn){
+                            die("<br>Error in creating a connnection: " . mysqli_connect_error());
+                          }else{
+                            if (isset($_SESSION['ufname'])){
+                              $sessid = $_SESSION['user_id'];
+                              $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$sessid'") or die (mysqli_error($conn));
+                              if(mysqli_num_rows($query)==1){
+                                $row = mysqli_fetch_assoc($query);
+                                $src = 'media/propics/'.$row['name'];
+                                echo "<img src=$src alt='Admin' class='rounded-circle' width='150'>";
+                              }
+                            }
+                          }
+                        ?>
                         <div class="mt-3">
                             <h4><?php echo $_SESSION['ufname']." ". $_SESSION['ulname']; ?></h4>
                             <p class="text-secondary mb-1"><?php echo $_SESSION['uemail']; ?></p>
-                            <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                            <button class="btn btn-primary">Follow</button>
-                            <button class="btn btn-outline-primary">Message</button>
+                            <p class="text-muted font-size-sm">Total Blogs Published: </p>
+                            <!-- <button class="btn btn-primary">Follow</button>
+                            <button class="btn btn-outline-primary">Message</button> -->
                         </div>
                         </div>
                     </div>
@@ -269,28 +284,39 @@
                           </div>
                           <hr>
                           <div class="row">
-                          <div class="col-sm-3">
-                              <h6 class="mb-0">Email</h6>
-                          </div>
-                          <div class="col-sm-9 text-secondary">
-                          <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com"
-                            value = "<?php echo $_SESSION['uemail'];?>"
-                          >
-                          <span class='text-danger'><?php echo $errEmail;?></span>
-                          </div>
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                              <input type="email" class="form-control" id="email" name="email" placeholder="abc@example.com"
+                                value = "<?php echo $_SESSION['uemail'];?>"
+                              >
+                              <span class='text-danger'><?php echo $errEmail;?></span>
+                            </div>
                           </div>
                           <hr>
                           <div class="row">
-                          <div class="col-sm-3">
-                              <h6 class="mb-0">Contact Number</h6>
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Contact Number</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                              <input type="number" class="form-control" id="conNo" name="conNo" placeholder="Enter contact number" 
+                              value = "<?php echo $_SESSION['unumber'];?>"
+                              >
+                              <span class='text-danger'><?php echo $errNum;?></span> 
+                            </div>
                           </div>
-                          <div class="col-sm-9 text-secondary">
-                            <input type="number" class="form-control" id="conNo" name="conNo" placeholder="Enter contact number" 
-                            value = "<?php echo $_SESSION['unumber'];?>"
-                            >
-                            <span class='text-danger'><?php echo $errNum;?></span> 
-                          </div>
-                          </div>
+                          <!-- <hr>
+                          <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Profile Picture</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                              <input type="file" class="form-control-file" id="propic" name="propic" 
+                              >
+                              <span class='text-danger'><?php echo $errNum;?></span> 
+                            </div>
+                          </div> -->
                           <!-- <hr>
                           <div class="row">
                             <div class="col-sm-3">
@@ -338,7 +364,7 @@
             $author = $_SESSION["user_id"];
             include_once('creds.php');
             if(!$conn){
-                die("<br>Error in creating a connection: " . mysqli_connect_error());
+                die("<br>Error in creating a connectionn: " . mysqli_connect_error());
             }else{
 
             $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author='$author'")
