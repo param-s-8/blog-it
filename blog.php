@@ -79,6 +79,8 @@
           return 'post-category bg-primary text-white mb-3';
         }elseif (strcasecmp($cat,"TECH") == 0) {
           return 'post-category bg-light text-black mb-3';
+        }elseif (strcasecmp($cat,"FASHION") == 0) {
+          return 'post-category bg-info text-white mb-3';
         }else{
           return 'post-category bg-black text-white mb-3';
         }
