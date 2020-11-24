@@ -92,70 +92,144 @@
           </div>
         </div>
       </header>
+      <?php
+            error_reporting(E_ALL ^ E_NOTICE);
+            $queries = array();
+            parse_str($_SERVER['QUERY_STRING'], $queries);
+            $page = $queries['page'];
+            if($page == false){
+              $page = 1;
+            }
+            $author = $_SESSION["user_id"];
+            include_once('creds.php');
+            if(!$conn){
+                die("<br>Error in creating a connection: " . mysqli_connect_error());
+            }else{
+            $offset = ($page - 1) * 6;
+            $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author<>'$author' ORDER BY updated_at DESC LIMIT $offset,6")
+              or die (mysqli_error($conn));
+            $index = 0;
+            while( $row = mysqli_fetch_assoc( $query)){
+                $blogs[$index] = $row;
+                $index = $index + 1;
+            }
 
+
+            $result = mysqli_query($conn, "SELECT count(1) FROM blogs WHERE author<>'$author'")
+              or die (mysqli_error($conn));
+            $row = mysqli_fetch_array($result);
+            $total = $row[0];
+
+
+            function categoryColor($cat)
+            {
+            if (strcasecmp($cat,"NATURE") == 0)
+              {
+              return 'post-category bg-success text-white mb-3';
+              }elseif (strcasecmp($cat,"POLITICS") == 0) {
+                return 'post-category bg-danger text-white mb-3';
+              }elseif (strcasecmp($cat,"TRAVEL") == 0) {
+                return 'post-category bg-warning text-white mb-3';
+              }elseif (strcasecmp($cat,"SPORTS") == 0) {
+                return 'post-category bg-primary text-white mb-3';
+              }elseif (strcasecmp($cat,"TECH") == 0) {
+                return 'post-category bg-light text-black mb-3';
+              }elseif (strcasecmp($cat,"FASHION") == 0) {
+                return 'post-category bg-info text-white mb-3';
+              }else{
+                return 'post-category bg-black text-white mb-3';
+              }
+            }
+ 
+          }
+            ?>
       <div class="site-section bg-light">
         <div class="container">
           <div class="row align-items-stretch retro-layout-2">
-            <div class="col-md-4">
+            <?php
+            $id = $blogs[0]['id'];
+            $title = $blogs[0]['title'];
+            $updatedAt = $blogs[0]['updated_at'];
+            echo "<div class=\"col-md-4\">
               <a
-                href="single.html"
-                class="h-entry mb-30 v-height gradient"
-                style="background-image: url('images/img_1.jpg')"
+                href=\"blog.php?blog_id=$id\"
+                class=\"h-entry mb-30 v-height gradient\"
+                style=\"background-image: url('images/img_1.jpg')\"
               >
-                <div class="text">
-                  <h2>The AI magically removes moving objects from videos.</h2>
-                  <span class="date">July 19, 2019</span>
+                <div class=\"text\">
+                  <h2>$title</h2>
+                  <span class=\"date\">$updatedAt</span>
+                </div>
+              </a>";
+            $id = $blogs[1]['id'];
+            $title = $blogs[1]['title'];
+            $updatedAt = $blogs[1]['updated_at'];
+              echo "
+              <a
+                href=\"blog.php?blog_id=$id\"
+                class=\"h-entry v-height gradient\"
+                style=\"background-image: url('images/img_2.jpg')\"
+              >
+                <div class=\"text\">
+                  <h2>$title</h2>
+                  <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
+            </div>";
+            $id = $blogs[2]['id'];
+            $title = $blogs[2]['title'];
+            $updatedAt = $blogs[2]['updated_at'];
+            $categories = explode(',',$blogs[2]['categories']);
+            echo "
+            <div class=\"col-md-4\">
               <a
-                href="single.html"
-                class="h-entry v-height gradient"
-                style="background-image: url('images/img_2.jpg')"
+                href=\"blog.php?blog_id=$id\"
+                class=\"h-entry img-5 h-100 gradient\"
+                style=\"background-image: url('images/img_v_1.jpg')\"
               >
-                <div class="text">
-                  <h2>The AI magically removes moving objects from videos.</h2>
-                  <span class="date">July 19, 2019</span>
+                <div class=\"text\">
+                  <div class=\"post-categories mb-3\">";
+                  foreach ($categories as $category) {
+                    $class = categoryColor($category);
+                    echo "<span class='$class'>$category</span> ";
+                  }
+                  echo "</div>
+                  <h2>$title</h2>
+                  <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
-            </div>
-            <div class="col-md-4">
+            </div>";
+            $id = $blogs[3]['id'];
+            $title = $blogs[3]['title'];
+            $updatedAt = $blogs[3]['updated_at'];
+            echo "
+            <div class=\"col-md-4\">
               <a
-                href="single.html"
-                class="h-entry img-5 h-100 gradient"
-                style="background-image: url('images/img_v_1.jpg')"
+                href=\"blog.php?blog_id=$id\"
+                class=\"h-entry mb-30 v-height gradient\"
+                style=\"background-image: url('images/img_3.jpg')\"
               >
-                <div class="text">
-                  <div class="post-categories mb-3">
-                    <span class="post-category bg-danger">Travel</span>
-                    <span class="post-category bg-primary">Food</span>
-                  </div>
-                  <h2>The AI magically removes moving objects from videos.</h2>
-                  <span class="date">July 19, 2019</span>
+                <div class=\"text\">
+                  <h2>$title</h2>
+                  <span class=\"date\">$updatedAt</span>
+                </div>
+              </a>";
+            $id = $blogs[0]['id'];
+            $title = $blogs[0]['title'];
+            $updatedAt = $blogs[0]['updated_at'];
+            echo "
+              <a
+                href=\"blog.php?blog_id=$id\"
+                class=\"h-entry v-height gradient\"
+                style=\"background-image: url('images/img_4.jpg')\"
+              >
+                <div class=\"text\">
+                  <h2>$title</h2>
+                  <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
-            </div>
-            <div class="col-md-4">
-              <a
-                href="single.html"
-                class="h-entry mb-30 v-height gradient"
-                style="background-image: url('images/img_3.jpg')"
-              >
-                <div class="text">
-                  <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                  <span class="date">July 19, 2019</span>
-                </div>
-              </a>
-              <a
-                href="single.html"
-                class="h-entry v-height gradient"
-                style="background-image: url('images/img_4.jpg')"
-              >
-                <div class="text">
-                  <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                  <span class="date">July 19, 2019</span>
-                </div>
-              </a>
-            </div>
+            </div>";
+            ?>
           </div>
         </div>
       </div>
@@ -168,401 +242,90 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_1.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-secondary mb-3"
-                    >Politics</span
-                  >
+            <?php
+            $i = 1;
+            foreach($blogs as $blog) {
+              $id = $blog['id'];
+              $author = $blog['author'];
+              $title = $blog['title'];
+              $subtitle = $blog['subtitle'];
+              $intro = $blog['intro'];
+              $main = $blog['main'];
+              $conclusion = $blog['conclusion'];
+              $additionalReadings = $blog['additionalReadings'];
+              $tags = explode(',',$blog['tags']);
+              $categories = explode(',',$blog['categories']);
+              $created_at = $blog['created_at'];
+              $updated_at = $blog['updated_at'];
 
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
+                          // fetching the author
+              $author_query = mysqli_query($conn, "SELECT fname,lname,email FROM registered_users WHERE user_id='$author'")
+                or die (mysqli_error($conn));
+                
+              $author_data = mysqli_fetch_array($author_query);
+              $author = $author_data['fname'];
+              $author_lname = $author_data['lname'];
+              $author_email = $author_data['email'];
+              echo " 
+              <div class=\"col-lg-4 mb-4\">
+                <div class=\"entry2\">
+                  <a href=\"blog.php?blog_id=$id\"
+                    ><img
+                      src=\"images/img_$i.jpg\"
+                      alt=\"Image\"
+                      class=\"img-fluid rounded\"
+                  /></a>
+                  <div class=\"excerpt\">";
+                  foreach ($categories as $category) {
+                    $class = categoryColor($category);
+                    echo "<span class='$class'>$category</span> ";
+                  }
+  
+                    echo " <h2>
+                      <a href=\"blog.php?blog_id=$id\"
+                        >$title</a
+                      >
+                    </h2>
+                    <div class=\"post-meta align-items-center text-left clearfix\">
+                      <figure class=\"author-figure mb-0 mr-3 float-left\">
+                        <img
+                          src=\"images/person_$i.jpg\"
+                          alt=\"Image\"
+                          class=\"img-fluid\"
+                        />
+                      </figure>
+                      <span class=\"d-inline-block mt-1\"
+                        >By <a href=\"#\">$author</a></span
+                      >
+                      <span>&nbsp;-&nbsp; $updated_at</span>
+                    </div>
+  
+                    <p>
+                      $intro
+                    </p>
+                    <p><a href=\"blog.php?blog_id=$id\">Read More</a></p>
                   </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
                 </div>
               </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_2.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-success mb-3"
-                    >Nature</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_3.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-warning mb-3"
-                    >Travel</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_1.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-secondary mb-3"
-                    >Politics</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_2.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-success mb-3"
-                    >Nature</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_4.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-danger mb-3"
-                    >Sports</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_1.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-success mb-3"
-                    >Nature</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_2.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-danger mb-3"
-                    >Sports</span
-                  >
-                  <span class="post-category text-white bg-secondary mb-3"
-                    >Tech</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-              <div class="entry2">
-                <a href="single.html"
-                  ><img
-                    src="images/img_4.jpg"
-                    alt="Image"
-                    class="img-fluid rounded"
-                /></a>
-                <div class="excerpt">
-                  <span class="post-category text-white bg-danger mb-3"
-                    >Sports</span
-                  >
-                  <span class="post-category text-white bg-warning mb-3"
-                    >Lifestyle</span
-                  >
-
-                  <h2>
-                    <a href="single.html"
-                      >The AI magically removes moving objects from videos.</a
-                    >
-                  </h2>
-                  <div class="post-meta align-items-center text-left clearfix">
-                    <figure class="author-figure mb-0 mr-3 float-left">
-                      <img
-                        src="images/person_1.jpg"
-                        alt="Image"
-                        class="img-fluid"
-                      />
-                    </figure>
-                    <span class="d-inline-block mt-1"
-                      >By <a href="#">Carrol Atkinson</a></span
-                    >
-                    <span>&nbsp;-&nbsp; July 19, 2019</span>
-                  </div>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quo sunt tempora dolor laudantium sed optio, explicabo ad
-                    deleniti impedit facilis fugit recusandae! Illo, aliquid,
-                    dicta beatae quia porro id est.
-                  </p>
-                  <p><a href="#">Read More</a></p>
-                </div>
-              </div>
-            </div>
+              ";
+              $i++;
+              if($i > 4){
+                $i = 0;
+              }
+            }
+            
+            ?>
           </div>
           <div class="row text-center pt-5 border-top">
             <div class="col-md-12">
               <div class="custom-pagination">
-                <span>1</span>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <span>...</span>
-                <a href="#">15</a>
+                <?php 
+                for($pageI = 0; $pageI < $total; $pageI+=6 ){
+                  $p = $pageI + 1;
+                  echo "<a href=\"index.php?page=$p\">$p</a>";
+                }
+                ?>
+                
               </div>
             </div>
           </div>
@@ -572,60 +335,130 @@
       <div class="site-section bg-light">
         <div class="container">
           <div class="row align-items-stretch retro-layout">
-            <div class="col-md-5 order-md-2">
-              <a
-                href="single.html"
-                class="hentry img-1 h-100 gradient"
-                style="background-image: url('images/img_4.jpg')"
-              >
-                <span class="post-category text-white bg-danger">Travel</span>
-                <div class="text">
-                  <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                  <span>February 12, 2019</span>
-                </div>
-              </a>
-            </div>
+          <?php
 
-            <div class="col-md-7">
+            include_once('creds.php');
+            if(!$conn){
+                die("<br>Error in creating a connection: " . mysqli_connect_error());
+            }else{
+            $offset = ($page - 1) * 6;
+            $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author<>'$author' AND categories LIKE '%travel%' ORDER BY updated_at DESC LIMIT 1,1")
+              or die (mysqli_error($conn));
+            $blog = mysqli_fetch_array($query);
+            if($blog != false){
+              $id = $blog['id'];
+              $title = $blog['title'];
+              $updated_at = $blog['updated_at'];
+              echo "<div class=\"col-md-5 order-md-2\">
               <a
-                href="single.html"
-                class="hentry img-2 v-height mb30 gradient"
-                style="background-image: url('images/img_1.jpg')"
+                href=\"blog.php?blog_id=$id\"
+                class=\"hentry img-1 h-100 gradient\"
+                style=\"background-image: url('images/img_4.jpg')\"
               >
-                <span class="post-category text-white bg-success">Nature</span>
-                <div class="text text-sm">
-                  <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                  <span>February 12, 2019</span>
+                <span class=\"post-category text-white bg-danger\">Travel</span>
+                <div class=\"text\">
+                  <h2>$title</h2>
+                  <span>$updated_at</span>
                 </div>
               </a>
+              </div>";
+            }
+            }
+            ?>
+            
+            <?php
+
+            include_once('creds.php');
+            if(!$conn){
+                die("<br>Error in creating a connection: " . mysqli_connect_error());
+            }else{
+            $offset = ($page - 1) * 6;
+            $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author<>'$author' AND categories LIKE '%nature%' ORDER BY updated_at DESC LIMIT 1,1")
+              or die (mysqli_error($conn));
+            $blog = mysqli_fetch_array($query);
+            if($blog != false){
+              $id = $blog['id'];
+              $title = $blog['title'];
+              $updated_at = $blog['updated_at'];
+              echo "<div class=\"col-md-7\">
+              <a
+                href=\"blog.php?blog_id=$id\"
+                class=\"hentry img-2 v-height mb30 gradient\"
+                style=\"background-image: url('images/img_1.jpg')\"
+              >
+                <span class=\"post-category text-white bg-success\">Nature</span>
+                <div class=\"text text-sm\">
+                  <h2>$title</h2>
+                  <span>$updated_at</span>
+                </div>
+              </a>
+              ";
+            }
+            }
+            ?>
+
 
               <div class="two-col d-block d-md-flex">
+              <?php
+
+              include_once('creds.php');
+              if(!$conn){
+                  die("<br>Error in creating a connection: " . mysqli_connect_error());
+              }else{
+              $offset = ($page - 1) * 6;
+              $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author<>'$author' AND categories LIKE '%sports%' ORDER BY updated_at DESC LIMIT 1,1")
+                or die (mysqli_error($conn));
+              $blog = mysqli_fetch_array($query);
+              if($blog != false){
+                $id = $blog['id'];
+                $title = $blog['title'];
+                $updated_at = $blog['updated_at'];
+                echo "
                 <a
-                  href="single.html"
-                  class="hentry v-height img-2 gradient"
-                  style="background-image: url('images/img_2.jpg')"
+                  href=\"blog.php?blog_id=$id\"
+                  class=\"hentry v-height img-2 gradient\"
+                  style=\"background-image: url('images/img_2.jpg')\"
                 >
-                  <span class="post-category text-white bg-primary"
-                    >Sports</span
-                  >
-                  <div class="text text-sm">
-                    <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                    <span>February 12, 2019</span>
+                  <span class=\"post-category text-white bg-primary\">Sports</span>
+                  <div class=\"text text-sm\">
+                    <h2>$title</h2>
+                    <span>$updated_at</span>
                   </div>
                 </a>
-                <a
-                  href="single.html"
-                  class="hentry v-height img-2 ml-auto gradient"
-                  style="background-image: url('images/img_3.jpg')"
-                >
-                  <span class="post-category text-white bg-warning"
-                    >Lifestyle</span
-                  >
-                  <div class="text text-sm">
-                    <h2>The 20 Biggest Fintech Companies In America 2019</h2>
-                    <span>February 12, 2019</span>
-                  </div>
-                </a>
+                ";
+              }
+              }
+              ?>
+              <?php
+
+                include_once('creds.php');
+                if(!$conn){
+                    die("<br>Error in creating a connection: " . mysqli_connect_error());
+                }else{
+                $offset = ($page - 1) * 6;
+                $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author<>'$author' AND categories LIKE '%lifestyle%' ORDER BY updated_at DESC LIMIT 1,1")
+                  or die (mysqli_error($conn));
+                $blog = mysqli_fetch_array($query);
+                if($blog != false){
+                  $id = $blog['id'];
+                  $title = $blog['title'];
+                  $updated_at = $blog['updated_at'];
+                  echo "
+                  <a
+                    href=\"blog.php?blog_id=$id\"
+                    class=\"hentry v-height img-2 ml-auto gradient\"
+                    style=\"background-image: url('images/img_3.jpg')\"
+                    >
+                    <span class=\"post-category text-white bg-warning\">LifeStyle</span>
+                    <div class=\"text text-sm\">
+                      <h2>$title</h2>
+                      <span>$updated_at</span>
+                    </div>
+                  </a>
+                  ";
+                }
+                }
+                ?>
               </div>
             </div>
           </div>
