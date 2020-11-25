@@ -117,23 +117,23 @@
             }
 
 
-            $imgName = $_FILES['blogpic']['name'];
-            $target_dir = "media/blogpics/";
-            $target_path = $target_dir.basename($_FILES["blogpic"]["name"]);
-            $uploadOk = 1;
-            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+            // $imgName = $_FILES['blogpic']['name'];
+            // $target_dir = "media/blogpics/";
+            // $target_path = $target_dir.basename($_FILES["blogpic"]["name"]);
+            // $uploadOk = 1;
+            // $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-            // Check if file already exists
-            if (file_exists($target_file)) {
-              $errPic = "Sorry, file already exists.";
-              $uploadOk = 0;
-            }
+            // // Check if file already exists
+            // if (file_exists($target_file)) {
+            //   $errPic = "Sorry, file already exists.";
+            //   $uploadOk = 0;
+            // }
 
-            // Check file size
-            if ($_FILES["propic"]["size"] > 1000000) {
-              $errPic = "Sorry, your file is too large.";
-              $uploadOk = 0;
-            }
+            // // Check file size
+            // if ($_FILES["propic"]["size"] > 1000000) {
+            //   $errPic = "Sorry, your file is too large.";
+            //   $uploadOk = 0;
+            // }
 
 
             
@@ -143,18 +143,18 @@
                     die("<br>Error in creating a connection: " . mysqli_connect_error());
                 }else{
 
-                  $imgName = strtolower($_SESSION['user_id']).$imgName;
+                  // $imgName = strtolower($_SESSION['user_id']).$imgName;
 
-                  if ($uploadOk == 0) {
-                    echo "<script>alert('Sorry, your file was not uploaded.');</script>";
-                  // if everything is ok, try to upload file
-                  } else {
-                    if (move_uploaded_file($_FILES["blogpic"]["tmp_name"], $target_dir.$imgName)) {
-                      $uploadOk = 1;
-                    } else {
-                      echo "<script>alert('Sorry there was an error uploading your file.')</script>";
-                    }
-                  }
+                  // if ($uploadOk == 0) {
+                  //   echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                  // // if everything is ok, try to upload file
+                  // } else {
+                  //   if (move_uploaded_file($_FILES["blogpic"]["tmp_name"], $target_dir.$imgName)) {
+                  //     $uploadOk = 1;
+                  //   } else {
+                  //     echo "<script>alert('Sorry there was an error uploading your file.')</script>";
+                  //   }
+                  // }
 
 
 
@@ -167,7 +167,7 @@
                     if(isset($_POST['submit'])){
                       $query = '';
                       echo "blog id: ".$blog_id;
-                        if(isset($_POST['blog_id'])){
+                        if($blog_id){
                           $blog_id = $_POST['blog_id'];
                           $query = "UPDATE blogs SET title='$title', subtitle='$subtitle', intro='$intro', main='$main', conclusion='$conclusion', additionalReadings='$additionalReadings', tags='$tags', categories='$categories' WHERE id='$blog_id'";
                           if(mysqli_query($conn,$query)){
