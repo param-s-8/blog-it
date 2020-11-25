@@ -123,15 +123,6 @@
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-           /*  $check = getimagesize($_FILES["propic"]["tmp_name"]);
-            if($check !== false) {
-              $uploadOk = 1;
-            } else {
-              $errPic = "File is not an image.";
-              $uploadOk = 0;
-            } */
-
-
             // Check if file already exists
             if (file_exists($target_file)) {
               $errPic = "Sorry, file already exists.";
@@ -143,12 +134,6 @@
               $errPic = "Sorry, your file is too large.";
               $uploadOk = 0;
             }
-
-            // Allow certain file formats
-            /* if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-              $errPic = "Sorry, only JPG, JPEG & PNG files are allowed.";
-              $uploadOk = 0;
-            } */
 
 
             
@@ -181,6 +166,7 @@
 
                     if(isset($_POST['submit'])){
                       $query = '';
+                      echo "blog id: ".$blog_id;
                         if(isset($_POST['blog_id'])){
                           $blog_id = $_POST['blog_id'];
                           $query = "UPDATE blogs SET title='$title', subtitle='$subtitle', intro='$intro', main='$main', conclusion='$conclusion', additionalReadings='$additionalReadings', tags='$tags', categories='$categories' WHERE id='$blog_id'";
@@ -193,20 +179,17 @@
                                   </script>";
                           }
                         }else{
-
-                         
-                          //echo "blog_id" . $blog_id;
                           $query = "INSERT INTO blogs (author, title, subtitle, intro, main, conclusion, additionalReadings, tags, categories) VALUES('$author', '$title','$subtitle','$intro','$main','$conclusion','$additionalReadings','$tags','$categories')";
                           if(mysqli_query($conn,$query)){
                             echo "Record inserted successfully.<br><br><a href=\"blogs-list.php\">Show Data</a>";
-                            $query2 = "SELECT id FROM blogs WHERE author='$author' AND title='$title'";
+                            /* $query2 = "SELECT id FROM blogs WHERE author='$author' AND title='$title'";
                             $bid = mysqli_fetch_assoc(mysqli_query($conn,$query2));
                             $uid = $_SESSION['user_id'];
                             $query3 = "INSERT INTO blogimg( userid, blogid, name) VALUES('$uid', $bid ,'$imgName' )";
-                            mysqli_query($conn,$query3);
+                            mysqli_query($conn,$query3); */
                           }else{
                               echo "<script>
-                                  alert('A problem occurred while posting blog ');
+                                  alert('A problem occurred while posting bloggg ');
                                   </script>";
                           }
                         }
@@ -296,7 +279,7 @@
               </div>
             </div>
           </div>
-          <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
+          <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data" >
             <h3>Header</h3>
             <div class="form-group">
               <label for="inputTitle">Title</label>

@@ -29,7 +29,7 @@
   <?php
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING) ;
         
-        $errFname = $errLname = $errEmail = $errNum = $errPref = '';
+        $errFname = $errLname = $errEmail = $errNum = $errPref = $errPic = '';
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if(empty($_POST['email'])){
@@ -74,7 +74,25 @@
               }
             }
 
-            if(($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errNum == '')&&($errPref == '')){
+            $imgName = $_FILES['propic']['name'];
+            $target_dir = "media/propics/";
+            $target_path = $target_dir.basename($_FILES["propic"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+            // Check if file already exists
+            if (file_exists($target_file)) {
+              $errPic = "Sorry, file already exists.";
+              $uploadOk = 0;
+            }
+
+            // Check file size
+            if ($_FILES["propic"]["size"] > 1000000) {
+              $errPic = "Sorry, your file is too large.";
+              $uploadOk = 0;
+            }
+
+            if(($errPic == '')&&($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errNum == '')&&($errPref == '')){
                 /* include_once('regInsert.php'); */
                 include_once('creds.php');
                 if(!$conn){
@@ -84,6 +102,21 @@
                     if(isset($_POST['submit'])){
                         $sess_id = $_SESSION['user_id'];
                         
+                        $imgName = strtolower($sess_id).$imgName;
+
+                        if ($uploadOk == 0) {
+                          echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+                        // if everything is ok, try to upload file
+                        } else {
+                          if (move_uploaded_file($_FILES["propic"]["tmp_name"], $target_dir.$imgName)) {
+                            $uploadOk = 1;
+                          } else {
+                            echo "<script>alert('Sorry there was an error uploading your file.')</script>";
+                          }
+                        }
+
+                        $query2 = "INSERT INTO proimg( userid, status, name) VALUES ('$sess_id',1,'$imgName' )";
+                        mysqli_query($conn,$query2);
 
                         $query = "UPDATE registered_users SET fname = '$fname' , lname = '$lname' , email = '$email', 
                         number = $num WHERE user_id='$sess_id' ";
@@ -212,6 +245,11 @@
                                 $row = mysqli_fetch_assoc($query);
                                 $src = 'media/propics/'.$row['name'];
                                 echo "<img src=$src alt='Admin' class='rounded-circle' width='150'>";
+                              }else{
+                                $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$sessid' ORDER BY id DESC") or die (mysqli_error($conn));
+                                $row = mysqli_fetch_assoc($query);
+                                $src = 'media/propics/'.$row['name'];
+                                echo "<img src=$src alt='Admin' class='rounded-circle' width='150'>";
                               }
                             }
                           }
@@ -258,7 +296,7 @@
                   
                     <div class="card mb-3">
                       <div class="card-body">
-                        <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                        <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                           <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">First Name</h6>
@@ -297,6 +335,16 @@
                           <hr>
                           <div class="row">
                             <div class="col-sm-3">
+                                <h6 class="mb-0">Profile Picture</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                            <input type="file" class="form-control-file" id="propic" name="propic">
+                              <span class='text-danger'><?php echo $errPic;?></span> 
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-3">
                                 <h6 class="mb-0">Contact Number</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
@@ -306,19 +354,8 @@
                               <span class='text-danger'><?php echo $errNum;?></span> 
                             </div>
                           </div>
-                          <!-- <hr>
-                          <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Profile Picture</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                              <input type="file" class="form-control-file" id="propic" name="propic" 
-                              >
-                              <span class='text-danger'><?php echo $errNum;?></span> 
-                            </div>
-                          </div> -->
-                          <!-- <hr>
-                          <div class="row">
+                          
+                          <!-- <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">Address</h6>
                             </div>
@@ -332,7 +369,7 @@
                               </select>
                               <span class='text-danger'><?php echo $errPref;?></span>
                             </div>
-                          </div> -->
+                          </div>  -->
                           <hr>
                           <div class="row">
                           <input type="submit" class="btn btn-success ml-3" value='Save Changes' name='submit'>
