@@ -116,9 +116,9 @@
                         }
 
                         $query2 = "INSERT INTO proimg( userid, status, name) VALUES ('$sess_id',1,'$imgName' )";
-                        mysqli_query($conn,$query2);
+                        if(mysqli_query($conn,$query2)){
 
-                        $query = "UPDATE registered_users SET fname = '$fname' , lname = '$lname' , email = '$email', 
+                          $query = "UPDATE registered_users SET fname = '$fname' , lname = '$lname' , email = '$email', 
                         number = $num WHERE user_id='$sess_id' ";
                         
                         if(mysqli_query($conn,$query)){
@@ -137,6 +137,14 @@
                                 alert('A problem occurred while registration ');
                                 </script>";
                         }
+
+                        }else{
+                          echo "<script>
+                                alert('A problem occurred while updating photo! ');
+                                </script>";
+                        }
+
+                        
                     }
                 }
             }
@@ -252,12 +260,15 @@
                                 echo "<img src=$src alt='Admin' class='rounded-circle' width='150'>";
                               }
                             }
+                            $query = mysqli_query($conn,"SELECT * FROM blogs WHERE author='$sessid'");
+                            $nums = mysqli_num_rows($query);
+
                           }
                         ?>
                         <div class="mt-3">
                             <h4><?php echo $_SESSION['ufname']." ". $_SESSION['ulname']; ?></h4>
                             <p class="text-secondary mb-1"><?php echo $_SESSION['uemail']; ?></p>
-                            <p class="text-muted font-size-sm">Total Blogs Published: </p>
+                            <p class="text-muted font-size-sm">Total Blogs Published: <?php echo $nums; ?></p>
                             <!-- <button class="btn btn-primary">Follow</button>
                             <button class="btn btn-outline-primary">Message</button> -->
                         </div>

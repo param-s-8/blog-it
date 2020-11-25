@@ -143,7 +143,7 @@
             $imgName = $_FILES['propic']['name'];
             $target_dir = "media/propics/";
             $target_path = $target_dir.basename($_FILES["propic"]["name"]);
-            $uploadOk = 1;
+           $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
            /*  $check = getimagesize($_FILES["propic"]["tmp_name"]);
@@ -156,22 +156,22 @@
 
 
             // Check if file already exists
-            if (file_exists($target_file)) {
-              $errPic = "Sorry, file already exists.";
-              $uploadOk = 0;
-            }
+             if (file_exists($target_file)) {
+               $errPic = "Sorry, file already exists.";
+               $uploadOk = 0;
+             }
 
-            // Check file size
-            if ($_FILES["propic"]["size"] > 1000000) {
-              $errPic = "Sorry, your file is too large.";
-              $uploadOk = 0;
-            }
+            // // Check file size
+           if ($_FILES["propic"]["size"] > 1000000) {
+             $errPic = "Sorry, your file is too large.";
+             $uploadOk = 0;
+           }
 
             // Allow certain file formats
-            /* if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
               $errPic = "Sorry, only JPG, JPEG & PNG files are allowed.";
               $uploadOk = 0;
-            } */
+            } 
 
             if(($errPic == '')&&($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errPassword == '')&&($errCPassword == '')&&($errNum == '')&&($errPref == '')){
                 /* include_once('regInsert.php'); */
@@ -206,7 +206,7 @@
                           } else {
                             echo "<script>alert('Sorry there was an error uploading your file.')</script>";
                           }
-                        }
+                        } 
 
                         $query2 = "INSERT INTO proimg( userid, status, name) VALUES ('$u_id',1,'$imgName' )";
                         mysqli_query($conn,$query2);

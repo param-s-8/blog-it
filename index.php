@@ -258,6 +258,28 @@
               $created_at = $blog['created_at'];
               $updated_at = $blog['updated_at'];
 
+              $q_bi = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author'") or die(mysqli_error($conn));
+              if(mysqli_num_rows($q_bi)==1){
+                $row = mysqli_fetch_assoc($q_bi);
+                $src = 'media/blogpics/'.$row['name'];
+                
+              }else{
+                $query = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author' ORDER BY id DESC") or die (mysqli_error($conn));
+                $row = mysqli_fetch_assoc($query);
+                $src = 'media/blogpics/'.$row['name'];
+              }
+
+              $sessid = $_SESSION['user_id'];
+              $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$author'") or die (mysqli_error($conn));
+              if(mysqli_num_rows($query)==1){
+                $row = mysqli_fetch_assoc($query);
+                $srcdp = 'media/propics/'.$row['name'];
+              }else{
+                $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$sessid' ORDER BY id DESC") or die (mysqli_error($conn));
+                $row = mysqli_fetch_assoc($query);
+                $srcdp = 'media/propics/'.$row['name'];
+              }
+
                           // fetching the author
               $author_query = mysqli_query($conn, "SELECT fname,lname,email FROM registered_users WHERE user_id='$author'")
                 or die (mysqli_error($conn));
@@ -271,7 +293,7 @@
                 <div class=\"entry2\">
                   <a href=\"blog.php?blog_id=$id\"
                     ><img
-                      src=\"images/img_$i.jpg\"
+                      src=\"$src\"
                       alt=\"Image\"
                       class=\"img-fluid rounded\"
                   /></a>
@@ -289,7 +311,7 @@
                     <div class=\"post-meta align-items-center text-left clearfix\">
                       <figure class=\"author-figure mb-0 mr-3 float-left\">
                         <img
-                          src=\"images/person_$i.jpg\"
+                          src=\"$srcdp\"
                           alt=\"Image\"
                           class=\"img-fluid\"
                         />
@@ -309,7 +331,7 @@
               </div>
               ";
               $i++;
-              if($i > 4){
+              if($i > 10){
                 $i = 0;
               }
             }
