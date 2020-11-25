@@ -238,7 +238,7 @@
 
 
             <div class="pt-5">
-              <h3 class="mb-5">6 Comments</h3>
+<!--               <h3 class="mb-5">6 Comments</h3>
               <ul class="comment-list">
                 <li class="comment">
                   <div class="vcard">
@@ -318,10 +318,10 @@
                     <p><a href="#" class="reply rounded">Reply</a></p>
                   </div>
                 </li>
-              </ul>
+              </ul> -->
               <!-- END comment-list -->
               
-              <div class="comment-form-wrap pt-5">
+              <!-- <div class="comment-form-wrap pt-5">
                 <h3 class="mb-5">Leave a comment</h3>
                 <form action="#" class="p-5 bg-light">
                   <div class="form-group">
@@ -346,7 +346,7 @@
                   </div>
 
                 </form>
-              </div>
+              </div> -->
             </div>
 
           </div>
@@ -381,7 +381,7 @@
               </div>
             </div>
             <!-- END sidebar-box -->  
-            <div class="sidebar-box">
+            <!-- <div class="sidebar-box">
               <h3 class="heading">Popular Posts</h3>
               <div class="post-entry-sidebar">
                 <ul>
@@ -420,10 +420,10 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> -->
             <!-- END sidebar-box -->
 
-            <div class="sidebar-box">
+            <!-- <div class="sidebar-box">
               <h3 class="heading">Categories</h3>
               <ul class="categories">
                 <li><a href="#">Food <span>(12)</span></a></li>
@@ -432,10 +432,10 @@
                 <li><a href="#">Business <span>(42)</span></a></li>
                 <li><a href="#">Adventure <span>(14)</span></a></li>
               </ul>
-            </div>
+            </div> -->
             <!-- END sidebar-box -->
 
-            <div class="sidebar-box">
+            <!-- <div class="sidebar-box">
               <h3 class="heading">Tags</h3>
               <ul class="tags">
                 <li><a href="#">Travel</a></li>
@@ -452,14 +452,14 @@
                 <li><a href="#">Freelancing</a></li>
               </ul>
             </div>
-          </div>
+          </div> -->
           <!-- END sidebar -->
 
         </div>
       </div>
     </section>
 
-    <div class="site-section bg-light">
+    <!-- <div class="site-section bg-light">
       <div class="container">
 
         <div class="row mb-5">
@@ -511,7 +511,7 @@
         </div>
 
       </div>
-    </div>
+    </div> -->
 
 
     <?php include_once('footer.php'); ?>
