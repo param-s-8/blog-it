@@ -365,22 +365,6 @@
                               <span class='text-danger'><?php echo $errNum;?></span> 
                             </div>
                           </div>
-                          
-                          <!-- <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                              <select class="form-control multipicker" id="prefer" name="prefer[]" type="text" multiple>
-                                <option value='nature' selected>Nature</option>
-                                <option value='travel'>Travel</option>
-                                <option value='politics'>Politics</option>
-                                <option value='sports'>Sports</option>
-                                <option value='tech'>Tech</option>
-                              </select>
-                              <span class='text-danger'><?php echo $errPref;?></span>
-                            </div>
-                          </div>  -->
                           <hr>
                           <div class="row">
                           <input type="submit" class="btn btn-success ml-3" value='Save Changes' name='submit'>
@@ -440,65 +424,7 @@
 
                     </div>
                   </div>
-                  
 
-                    
-                    <!-- <div class="row gutters-sm">
-                    <div class="col-sm-6 mb-3">
-                        <div class="card h-100">
-                        <div class="card-body">
-                            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                            <small>Web Design</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>Website Markup</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>One Page</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>Mobile Template</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>Backend API</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 mb-3">
-                        <div class="card h-100">
-                        <div class="card-body">
-                            <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                            <small>Web Design</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>Website Markup</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>One Page</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>Mobile Template</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small>Backend API</small>
-                            <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    </div> -->
                 </div>
 
             </div>

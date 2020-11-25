@@ -66,6 +66,35 @@
       $author_fname = $author_data['fname'];
       $author_lname = $author_data['lname'];
       $author_email = $author_data['email'];
+
+
+      //fecting author's dp
+      $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$author'") or die (mysqli_error($conn));
+      if(mysqli_num_rows($query)==1){
+        $row = mysqli_fetch_assoc($query);
+        $srcdp = 'media/propics/'.$row['name'];
+      }else{
+        $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$author' ORDER BY id DESC") or die (mysqli_error($conn));
+        $row = mysqli_fetch_assoc($query);
+        $srcdp = 'media/propics/'.$row['name'];
+      }
+
+      //fecting author's total blogs
+      $query = mysqli_query($conn,"SELECT * FROM blogs WHERE author='$author'");
+      $nums = mysqli_num_rows($query);
+
+      //fetching blog's associated image
+      $q_bi = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author'") or die(mysqli_error($conn));
+      if(mysqli_num_rows($q_bi)==1){
+        $row = mysqli_fetch_assoc($q_bi);
+        $src = 'media/blogpics/'.$row['name'];
+        
+      }else{
+        $query = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author' ORDER BY id DESC") or die (mysqli_error($conn));
+        $row = mysqli_fetch_assoc($query);
+        $src = 'media/blogpics/'.$row['name'];
+      }
+
       function categoryColor($cat)
       {
       if (strcasecmp($cat,"NATURE") == 0)
@@ -126,18 +155,21 @@
                 <ul
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
-                  <li><a href="category.html">Home</a></li>
+                  <li><a href="index.php">Home</a></li>
                   <li><a href="category.html">Politics</a></li>
                   <li><a href="category.html">Tech</a></li>
                   <li><a href="category.html">Entertainment</a></li>
                   <li><a href="category.html">Travel</a></li>
                   <li><a href="category.html">Sports</a></li>
-                  <li><a href="blog.html">Create Blog</a></li>
-                  <li class="d-none d-lg-inline-block">
-                    <a href="#" class="js-search-toggle"
-                      ><span class="icon-search"></span
-                    ></a>
-                  </li>
+                  <?php
+                    if(isset($_SESSION['user_id'])){
+                      echo "<li><a href='logout.php'>Log Out</a></li>";
+                      echo "<li class='disabled'><a href='user_profile.php'>"."Hello, ".$_SESSION['ufname']."</a></li>";
+                    }else{
+                      echo "<li><a href='login.php'>Log In</a></li>";
+                    }
+                  ?>
+                  <li><a href="compose.php">Create Blog</a></li>
                 </ul>
               </nav>
               <a
@@ -148,8 +180,8 @@
             </div>
           </div>
         </div>
-      </header>
-      <div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url('images/img_2.jpg');">
+      </header>   <!-- style="background-image: url('images/img_2.jpg'); -->
+      <div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url(<?php echo $src ?>);">
       <div class="container">
         <div class="row same-height justify-content-center">
           <div class="col-md-12 col-lg-10">
@@ -163,8 +195,8 @@
               <h1 class="mb-4"><a href="#"><?php echo $title; ?></a></h1>
               <h3 class="mb-4" style="color:orange;"><?php echo $subtitle; ?></h3>
               <div class="post-meta align-items-center text-center">
-                <figure class="author-figure mb-0 mr-3 d-inline-block"><img src="images/person_1.jpg" alt="Image" class="img-fluid"></figure>
-                <span class="d-inline-block mt-1">By <?php echo $author_fname . $author_lname; ?></span>
+                <figure class="author-figure mb-0 mr-3 d-inline-block"><img <?php echo "src=$srcdp"?> alt="Image" class="img-fluid"></figure>
+                <span class="d-inline-block mt-1">By <?php echo $author_fname .' '. $author_lname; ?></span>
                 <span>&nbsp;-&nbsp; <?php echo $updated_at; ?></span>
               </div>
             </div>
@@ -190,7 +222,7 @@
               <p><?php echo $conclusion; ?></p>            
             </div>
 
-            <h3 class="mb-4" >Addition Readings: <a href="#" style="color:DodgerBlue"><?php echo $additionalReadings; ?></a></h3>
+            <h3 class="mb-4" >Additional Readings: <a href="#" style="color:DodgerBlue"><?php echo $additionalReadings; ?></a></h3>
 
             <div class="pt-5">
               <p>Categories:  <?php
@@ -333,11 +365,12 @@
             <!-- END sidebar-box -->
             <div class="sidebar-box">
               <div class="bio text-center">
-                <img src="images/person_2.jpg" alt="Image Placeholder" class="img-fluid mb-5">
+                <img <?php echo "src=$srcdp" ?> alt="Image Placeholder" class="img-fluid mb-5">
                 <div class="bio-body">
-                  <h2><?php echo $author_fname . $author_lname; ?></h2>
+                  <h2><?php echo $author_fname ." ". $author_lname; ?></h2>
                   <p class="mb-4"><?php echo $author_email; ?></p>
-                  <p><a href="#" class="btn btn-primary btn-sm rounded px-4 py-2">View my profile</a></p>
+                  <p class="mb-4"><?php echo "Total Blogs Published: "." ".$nums; ?></p>
+                  <!-- <p><a href="#" class="btn btn-primary btn-sm rounded px-4 py-2">View my profile</a></p> -->
                   <p class="social">
                     <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
                     <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>

@@ -160,9 +160,6 @@
                   <li><a href="category.html">Sports</a></li>
                   <li><a href="login.php">Log In</a></li>
                   <li><a href="compose.php">Create Blog</a></li>
-                  <li class="d-none d-lg-inline-block">
-                    <a href="#" class="js-search-toggle"><span class="icon-search"></span></a>
-                  </li>
                 </ul>
               </nav>
               <a

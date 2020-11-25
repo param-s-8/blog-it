@@ -280,11 +280,6 @@
                     }
                   ?>
                   <li><a href="compose.php">Create Blog</a></li>
-                  <li class="d-none d-lg-inline-block">
-                    <a href="#" class="js-search-toggle"
-                      ><span class="icon-search"></span
-                    ></a>
-                  </li>
                 </ul>
               </nav>
               <a
@@ -308,37 +303,6 @@
               </div>
             </div>
         </div>
-        <!-- <div class='outer-box col-md-5 mx-auto'>   
-            <div class='row'>
-                <div class='col-md-1 col-sm-12'></div>
-                <div class='col-md-10 col-sm-12'>
-                    <form method='POST' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                        <div class="form-group row">
-                            <label for="email" class="col-md-3 col-form-label">Email</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email">
-                                <span class="errMsg"><?php echo $errEmail;?></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="password" class="col-md-3 col-form-label">Password</label>
-                            <div class="col-md-9">
-                                <input type="password" class="form-control" id="password" name='password' placeholder="Password">
-                                <span class="errMsg"><?php echo $errPassword;?></span>
-                            </div>
-                        </div>
-                        <div class='d-flex justify-content-around'>
-                            <input type="submit" class="btn btn-success" value='Submit'>
-                            <input type="reset" class="btn btn-dark" value='Reset'>
-                        </div>
-                    </form>
-                </div>
-                <div class='col-md-1'></div>    
-            </div>
-            <div class='row row2 d-flex justify-content-center '>
-                <p>Don't have an account? <a href='#'>Create One!</a></p>
-            </div>    
-        </div> -->
 
         <div class='container'>
             <div class='row'>
