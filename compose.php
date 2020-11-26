@@ -166,7 +166,8 @@
 
                     if(isset($_POST['submit'])){
                       $query = '';
-                        if($blog_id){
+                        echo "blog id" . $blog_id;
+                        if($blog_id == false){
                           $blog_id = $_POST['blog_id'];
                           $query = "UPDATE blogs SET title='$title', subtitle='$subtitle', intro='$intro', main='$main', conclusion='$conclusion', additionalReadings='$additionalReadings', tags='$tags', categories='$categories' WHERE id='$blog_id'";
                           if(mysqli_query($conn,$query)){
