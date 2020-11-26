@@ -147,98 +147,103 @@
       <div class="container">
         <div class="row">
         <?php
-            $i = 1;
-            foreach($blogs as $blog) {
-              $id = $blog['id'];
-              $author = $blog['author'];
-              $title = $blog['title'];
-              $subtitle = $blog['subtitle'];
-              $intro = $blog['intro'];
-              $main = $blog['main'];
-              $conclusion = $blog['conclusion'];
-              $additionalReadings = $blog['additionalReadings'];
-              $tags = explode(',',$blog['tags']);
-              $categories = explode(',',$blog['categories']);
-              $created_at = $blog['created_at'];
-              $updated_at = $blog['updated_at'];
-
-              $q_bi = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author'") or die(mysqli_error($conn));
-              if(mysqli_num_rows($q_bi)==1){
-                $row = mysqli_fetch_assoc($q_bi);
-                $src = 'media/blogpics/'.$row['name'];
-                
-              }else{
-                $query = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author' ORDER BY id DESC") or die (mysqli_error($conn));
-                $row = mysqli_fetch_assoc($query);
-                $src = 'media/blogpics/'.$row['name'];
-              }
-
-              $sessid = $_SESSION['user_id'];
-              $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$author'") or die (mysqli_error($conn));
-              if(mysqli_num_rows($query)==1){
-                $row = mysqli_fetch_assoc($query);
-                $srcdp = 'media/propics/'.$row['name'];
-              }else{
-                $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$sessid' ORDER BY id DESC") or die (mysqli_error($conn));
-                $row = mysqli_fetch_assoc($query);
-                $srcdp = 'media/propics/'.$row['name'];
-              }
-
-                          // fetching the author
-              $author_query = mysqli_query($conn, "SELECT fname,lname,email FROM registered_users WHERE user_id='$author'")
-                or die (mysqli_error($conn));
-                
-              $author_data = mysqli_fetch_array($author_query);
-              $author = $author_data['fname'];
-              $author_lname = $author_data['lname'];
-              $author_email = $author_data['email'];
-              echo " 
-              <div class=\"col-lg-4 mb-4\">
-                <div class=\"entry2\">
-                  <a href=\"blog.php?blog_id=$id\"
-                    ><img
-                      src=\"$src\"
-                      alt=\"Image\"
-                      class=\"img-fluid rounded\"
-                  /></a>
-                  <div class=\"excerpt\">";
-                  foreach ($categories as $category) {
-                    $class = categoryColor($category);
-                    echo "<span class='$class'>$category</span> ";
-                  }
+            if($blogs == null){
+              echo "Sorry No Blogs Currently Present";
+            }else{
+              $i = 1;
+              foreach($blogs as $blog) {
+                $id = $blog['id'];
+                $author = $blog['author'];
+                $title = $blog['title'];
+                $subtitle = $blog['subtitle'];
+                $intro = $blog['intro'];
+                $main = $blog['main'];
+                $conclusion = $blog['conclusion'];
+                $additionalReadings = $blog['additionalReadings'];
+                $tags = explode(',',$blog['tags']);
+                $categories = explode(',',$blog['categories']);
+                $created_at = $blog['created_at'];
+                $updated_at = $blog['updated_at'];
   
-                    echo " <h2>
-                      <a href=\"blog.php?blog_id=$id\"
-                        >$title</a
-                      >
-                    </h2>
-                    <div class=\"post-meta align-items-center text-left clearfix\">
-                      <figure class=\"author-figure mb-0 mr-3 float-left\">
-                        <img
-                          src=\"$srcdp\"
-                          alt=\"Image\"
-                          class=\"img-fluid\"
-                        />
-                      </figure>
-                      <span class=\"d-inline-block mt-1\"
-                        >By <a href=\"#\">$author</a></span
-                      >
-                      <span>&nbsp;-&nbsp; $updated_at</span>
+                $q_bi = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author'") or die(mysqli_error($conn));
+                if(mysqli_num_rows($q_bi)==1){
+                  $row = mysqli_fetch_assoc($q_bi);
+                  $src = 'media/blogpics/'.$row['name'];
+                  
+                }else{
+                  $query = mysqli_query($conn,"SELECT * FROM blogimg WHERE blogid=$id and userid='$author' ORDER BY id DESC") or die (mysqli_error($conn));
+                  $row = mysqli_fetch_assoc($query);
+                  $src = 'media/blogpics/'.$row['name'];
+                }
+  
+                $sessid = $_SESSION['user_id'];
+                $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$author'") or die (mysqli_error($conn));
+                if(mysqli_num_rows($query)==1){
+                  $row = mysqli_fetch_assoc($query);
+                  $srcdp = 'media/propics/'.$row['name'];
+                }else{
+                  $query = mysqli_query($conn,"SELECT * FROM proimg WHERE userid='$sessid' ORDER BY id DESC") or die (mysqli_error($conn));
+                  $row = mysqli_fetch_assoc($query);
+                  $srcdp = 'media/propics/'.$row['name'];
+                }
+  
+                            // fetching the author
+                $author_query = mysqli_query($conn, "SELECT fname,lname,email FROM registered_users WHERE user_id='$author'")
+                  or die (mysqli_error($conn));
+                  
+                $author_data = mysqli_fetch_array($author_query);
+                $author = $author_data['fname'];
+                $author_lname = $author_data['lname'];
+                $author_email = $author_data['email'];
+                echo " 
+                <div class=\"col-lg-4 mb-4\">
+                  <div class=\"entry2\">
+                    <a href=\"blog.php?blog_id=$id\"
+                      ><img
+                        src=\"$src\"
+                        alt=\"Image\"
+                        class=\"img-fluid rounded\"
+                    /></a>
+                    <div class=\"excerpt\">";
+                    foreach ($categories as $category) {
+                      $class = categoryColor($category);
+                      echo "<span class='$class'>$category</span> ";
+                    }
+    
+                      echo " <h2>
+                        <a href=\"blog.php?blog_id=$id\"
+                          >$title</a
+                        >
+                      </h2>
+                      <div class=\"post-meta align-items-center text-left clearfix\">
+                        <figure class=\"author-figure mb-0 mr-3 float-left\">
+                          <img
+                            src=\"$srcdp\"
+                            alt=\"Image\"
+                            class=\"img-fluid\"
+                          />
+                        </figure>
+                        <span class=\"d-inline-block mt-1\"
+                          >By <a href=\"#\">$author</a></span
+                        >
+                        <span>&nbsp;-&nbsp; $updated_at</span>
+                      </div>
+    
+                      <p>
+                        $intro
+                      </p>
+                      <p><a href=\"blog.php?blog_id=$id\">Read More</a></p>
                     </div>
-  
-                    <p>
-                      $intro
-                    </p>
-                    <p><a href=\"blog.php?blog_id=$id\">Read More</a></p>
                   </div>
                 </div>
-              </div>
-              ";
-              $i++;
-              if($i > 10){
-                $i = 0;
+                ";
+                $i++;
+                if($i > 10){
+                  $i = 0;
+                }
               }
             }
+            
             
             ?>
           
