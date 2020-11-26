@@ -66,13 +66,21 @@
                 <ul
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
-                  <li><a href="category.html">Home</a></li>
-                  <li><a href="category.html">Politics</a></li>
-                  <li><a href="category.html">Tech</a></li>
-                  <li><a href="category.html">Entertainment</a></li>
-                  <li><a href="category.html">Travel</a></li>
-                  <li><a href="category.html">Sports</a></li>
-                  <li><a href="blog.html">Create Blog</a></li>
+                <li><a href="index.php">Home</a></li>
+                  <li><a href="category.php?category=politics">Politics</a></li>
+                  <li><a href="category.php?category=nature">Nature</a></li>
+                  <li><a href="category.php?category=tech">Tech</a></li>
+                  <li><a href="category.php?category=travel">Travel</a></li>
+                  <li><a href="category.php?category=sports">Sports</a></li>
+                  <?php
+                    if(isset($_SESSION['user_id'])){
+                      echo "<li><a href='logout.php'>Log Out</a></li>";
+                      echo "<li class='disabled'><a href='user_profile.php'>"."Hello, ".$_SESSION['ufname']."</a></li>";
+                    }else{
+                      echo "<li><a href='login.php'>Log In</a></li>";
+                    }
+                  ?>
+                  <li><a href="compose.php">Create Blog</a></li>
                 </ul>
               </nav>
               <a

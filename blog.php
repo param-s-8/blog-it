@@ -156,11 +156,11 @@
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
                   <li><a href="index.php">Home</a></li>
-                  <li><a href="category.html">Politics</a></li>
-                  <li><a href="category.html">Tech</a></li>
-                  <li><a href="category.html">Entertainment</a></li>
-                  <li><a href="category.html">Travel</a></li>
-                  <li><a href="category.html">Sports</a></li>
+                  <li><a href="category.php?category=politics">Politics</a></li>
+                  <li><a href="category.php?category=nature">Nature</a></li>
+                  <li><a href="category.php?category=tech">Tech</a></li>
+                  <li><a href="category.php?category=travel">Travel</a></li>
+                  <li><a href="category.php?category=sports">Sports</a></li>
                   <?php
                     if(isset($_SESSION['user_id'])){
                       echo "<li><a href='logout.php'>Log Out</a></li>";
