@@ -144,7 +144,7 @@
             $target_dir = "media/propics/";
             $target_path = $target_dir.basename($_FILES["propic"]["name"]);
            $uploadOk = 1;
-            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+            $imageFileType = strtolower(pathinfo($target_path,PATHINFO_EXTENSION));
 
            /*  $check = getimagesize($_FILES["propic"]["tmp_name"]);
             if($check !== false) {
@@ -161,17 +161,19 @@
                $uploadOk = 0;
              }
 
+             // Allow certain file formats
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG") {
+              $errPic = "Sorry, only JPG, JPEG & PNG files are allowed.";
+              $uploadOk = 0;
+            } 
+
             // // Check file size
            if ($_FILES["propic"]["size"] > 1000000) {
              $errPic = "Sorry, your file is too large.";
              $uploadOk = 0;
            }
 
-            // Allow certain file formats
-            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-              $errPic = "Sorry, only JPG, JPEG & PNG files are allowed.";
-              $uploadOk = 0;
-            } 
+            
 
             if(($errPic == '')&&($errFname == '')&&($errLname == '')&&($errEmail == '')&&($errPassword == '')&&($errCPassword == '')&&($errNum == '')&&($errPref == '')){
                 /* include_once('regInsert.php'); */

@@ -252,9 +252,11 @@
           <div class="col-md-12">
             <div class="custom-pagination">
               <?php 
+              $ctr = 1;
                 for($pageI = 0; $pageI < $total; $pageI+=6 ){
                   $p = $pageI + 1;
-                  echo "<a href=\"index.php?page=$p\">$p</a>";
+                  echo "<a href=\"index.php?page=$ctr\">$ctr</a>";
+                  $ctr = $ctr+1;
                 }
               ?>
             </div>

@@ -101,7 +101,7 @@
                 die("<br>Error in creating a connection: " . mysqli_connect_error());
             }else{
             $offset = ($page - 1) * 6;
-            $query = mysqli_query($conn, "SELECT * FROM blogs WHERE author<>'$author' ORDER BY updated_at DESC LIMIT $offset,6")
+            $query = mysqli_query($conn, "SELECT * FROM blogs  ORDER BY updated_at DESC LIMIT $offset,6")
               or die (mysqli_error($conn));
             $index = 0;
             while( $row = mysqli_fetch_assoc( $query)){
@@ -110,7 +110,7 @@
             }
 
 
-            $result = mysqli_query($conn, "SELECT count(1) FROM blogs WHERE author<>'$author'")
+            $result = mysqli_query($conn, "SELECT count(1) FROM blogs")
               or die (mysqli_error($conn));
             $row = mysqli_fetch_array($result);
             $total = $row[0];
@@ -337,9 +337,11 @@
             <div class="col-md-12">
               <div class="custom-pagination">
                 <?php 
+                $ctr = 1;
                 for($pageI = 0; $pageI < $total; $pageI+=6 ){
                   $p = $pageI + 1;
-                  echo "<a href=\"index.php?page=$p\">$p</a>";
+                  echo "<a href=\"index.php?page=$ctr\">$ctr</a>";
+                  $ctr = $ctr+1;
                 }
                 ?>
                 
@@ -482,7 +484,7 @@
         </div>
       </div>
 
-      <div class="site-section bg-lightx">
+      <!-- <div class="site-section bg-lightx">
         <div class="container">
           <div class="row justify-content-center text-center">
             <div class="col-md-5">
@@ -508,7 +510,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <?php include_once('footer.php'); ?>
 

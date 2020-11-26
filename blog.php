@@ -147,7 +147,7 @@
             </div>
 
             <div class="col-4 site-logo">
-              <a href="index.html" class="text-black h2 mb-0">Mini Blog</a>
+              <a href="index.php" class="text-black h2 mb-0">Blog-It</a>
             </div>
 
             <div class="col-8 text-right">
@@ -181,7 +181,7 @@
           </div>
         </div>
       </header>   <!-- style="background-image: url('images/img_2.jpg'); -->
-      <div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url(<?php echo $src ?>);">
+      <div class="site-cover site-cover-sm same-height overlay single-page" style="background-image: url(<?php echo $src; ?>);">
       <div class="container">
         <div class="row same-height justify-content-center">
           <div class="col-md-12 col-lg-10">
