@@ -6,7 +6,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog-IT</title>
+    <title>Blog It: Your Favourite Blog Site</title>
+
+    <meta name='description' content="A bloggers community for blog writing about popular topics and ideas.">
+    
+    <meta name="keywords" content="blog, blog post, blog ideas, blogspot, blogger,
+    blogger blogs, blog del narco, blog writing, blogging, nature, travel, politics, sports, tech">
+
     <?php include('google-analytics.php'); ?>
     <!--CSS & Fonts-->
     <link
@@ -61,12 +67,12 @@
                 <ul
                   class="site-menu js-clone-nav mr-auto d-none d-lg-block mb-0"
                 >
-                  <li><a href="index.php">Home</a></li>
-                  <li><a href="category.php?category=politics">Politics</a></li>
-                  <li><a href="category.php?category=nature">Nature</a></li>
-                  <li><a href="category.php?category=tech">Tech</a></li>
-                  <li><a href="category.php?category=travel">Travel</a></li>
-                  <li><a href="category.php?category=sports">Sports</a></li>
+                  <li><a href="index.php" title='Blog It: Home Page'>Home</a></li>
+                  <li><a href="category.php?category=politics" title='Blog It: Politics Page'>Politics</a></li>
+                  <li><a href="category.php?category=nature" title='Blog It: Nature Page'>Nature</a></li>
+                  <li><a href="category.php?category=tech" title='Blog It: Tech Page'>Tech</a></li>
+                  <li><a href="category.php?category=travel" title='Blog It: Travel Page'>Travel</a></li>
+                  <li><a href="category.php?category=sports" title='Blog It: Sports Page'>Sports</a></li>
                   <?php
                     if(isset($_SESSION['user_id'])){
                       echo "<li><a href='logout.php'>Log Out</a></li>";
@@ -152,7 +158,7 @@
                 style=\"background-image: url('images/img_1.jpg')\"
               >
                 <div class=\"text\">
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>";
@@ -166,7 +172,7 @@
                 style=\"background-image: url('images/img_2.jpg')\"
               >
                 <div class=\"text\">
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
@@ -189,7 +195,7 @@
                     echo "<span class='$class'>$category</span> ";
                   }
                   echo "</div>
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
@@ -205,7 +211,7 @@
                 style=\"background-image: url('images/img_3.jpg')\"
               >
                 <div class=\"text\">
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>";
@@ -219,7 +225,7 @@
                 style=\"background-image: url('images/img_4.jpg')\"
               >
                 <div class=\"text\">
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
@@ -298,11 +304,11 @@
                     echo "<span class='$class'>$category</span> ";
                   }
   
-                    echo " <h2>
+                    echo " <h1>
                       <a href=\"blog.php?blog_id=$id\"
                         >$title</a
                       >
-                    </h2>
+                    </h1>
                     <div class=\"post-meta align-items-center text-left clearfix\">
                       <figure class=\"author-figure mb-0 mr-3 float-left\">
                         <img
@@ -376,7 +382,7 @@
               >
                 <span class=\"post-category text-white bg-danger\">Travel</span>
                 <div class=\"text\">
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span>$updated_at</span>
                 </div>
               </a>
@@ -407,7 +413,7 @@
               >
                 <span class=\"post-category text-white bg-success\">Nature</span>
                 <div class=\"text text-sm\">
-                  <h2>$title</h2>
+                  <h1>$title</h1>
                   <span>$updated_at</span>
                 </div>
               </a>
@@ -440,7 +446,7 @@
                 >
                   <span class=\"post-category text-white bg-primary\">Sports</span>
                   <div class=\"text text-sm\">
-                    <h2>$title</h2>
+                    <h1>$title</h1>
                     <span>$updated_at</span>
                   </div>
                 </a>
@@ -470,7 +476,7 @@
                     >
                     <span class=\"post-category text-white bg-warning\">LifeStyle</span>
                     <div class=\"text text-sm\">
-                      <h2>$title</h2>
+                      <h1>$title</h1>
                       <span>$updated_at</span>
                     </div>
                   </a>
