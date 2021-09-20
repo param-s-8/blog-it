@@ -10,7 +10,7 @@
 
     <meta name='description' content="A bloggers community for blog writing about politics, travel, india, nature, sports, tech.">
     
-    <meta name="keywords" content="blog, india, blog post, blog ideas, blogspot, blogger, blogger blogs, blog del narco, blog writing, blogging, nature, travel, politics, sports, tech">
+    <meta name="keywords" content="nature,travel,politics,sports,tech,blog,india,blogspot,blogger,blogging">
 
     <?php include('google-analytics.php'); ?>
     <!--CSS & Fonts-->
