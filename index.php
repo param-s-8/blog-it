@@ -8,10 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog It: Your Favourite Blog Site</title>
 
-    <meta name='description' content="A bloggers community for blog writing about popular topics and ideas.">
+    <meta name='description' content="A bloggers community for blog writing about politics, travel, india, nature, sports, tech.">
     
-    <meta name="keywords" content="blog, blog post, blog ideas, blogspot, blogger,
-    blogger blogs, blog del narco, blog writing, blogging, nature, travel, politics, sports, tech">
+    <meta name="keywords" content="blog, india, blog post, blog ideas, blogspot, blogger, blogger blogs, blog del narco, blog writing, blogging, nature, travel, politics, sports, tech">
 
     <?php include('google-analytics.php'); ?>
     <!--CSS & Fonts-->
@@ -239,7 +238,7 @@
         <div class="container">
           <div class="row mb-5">
             <div class="col-12">
-              <h2>Recent Posts</h2>
+              <h1>Recent Posts</h1>
             </div>
           </div>
           <div class="row">
@@ -304,11 +303,11 @@
                     echo "<span class='$class'>$category</span> ";
                   }
   
-                    echo " <h1 style='color:black';>
+                    echo " <h2 style='color:black';>
                       <a href=\"blog.php?blog_id=$id\"
                         >$title</a
                       >
-                    </h1>
+                    </h2>
                     <div class=\"post-meta align-items-center text-left clearfix\">
                       <figure class=\"author-figure mb-0 mr-3 float-left\">
                         <img
