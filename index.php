@@ -158,7 +158,7 @@
                 style=\"background-image: url('images/img_1.jpg')\"
               >
                 <div class=\"text\">
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>";
@@ -172,7 +172,7 @@
                 style=\"background-image: url('images/img_2.jpg')\"
               >
                 <div class=\"text\">
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
@@ -195,7 +195,7 @@
                     echo "<span class='$class'>$category</span> ";
                   }
                   echo "</div>
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
@@ -211,7 +211,7 @@
                 style=\"background-image: url('images/img_3.jpg')\"
               >
                 <div class=\"text\">
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>";
@@ -225,7 +225,7 @@
                 style=\"background-image: url('images/img_4.jpg')\"
               >
                 <div class=\"text\">
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span class=\"date\">$updatedAt</span>
                 </div>
               </a>
@@ -304,7 +304,7 @@
                     echo "<span class='$class'>$category</span> ";
                   }
   
-                    echo " <h1>
+                    echo " <h1 style='color:black';>
                       <a href=\"blog.php?blog_id=$id\"
                         >$title</a
                       >
@@ -382,7 +382,7 @@
               >
                 <span class=\"post-category text-white bg-danger\">Travel</span>
                 <div class=\"text\">
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span>$updated_at</span>
                 </div>
               </a>
@@ -413,7 +413,7 @@
               >
                 <span class=\"post-category text-white bg-success\">Nature</span>
                 <div class=\"text text-sm\">
-                  <h1>$title</h1>
+                  <h2>$title</h2>
                   <span>$updated_at</span>
                 </div>
               </a>
@@ -446,7 +446,7 @@
                 >
                   <span class=\"post-category text-white bg-primary\">Sports</span>
                   <div class=\"text text-sm\">
-                    <h1>$title</h1>
+                    <h2>$title</h2>
                     <span>$updated_at</span>
                   </div>
                 </a>
@@ -476,7 +476,7 @@
                     >
                     <span class=\"post-category text-white bg-warning\">LifeStyle</span>
                     <div class=\"text text-sm\">
-                      <h1>$title</h1>
+                      <h2>$title</h2>
                       <span>$updated_at</span>
                     </div>
                   </a>
