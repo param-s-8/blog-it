@@ -1,5 +1,5 @@
 # Blog-It
-A Sleek And Smooth Blogging Website
+A Sleek And Smooth Blogging Website Where You Can Blog On Topics Like Food, Nature, Politics, Technology, etc.
 ## Tech Stack:
 
 FrontEnd  | BackEnd |
